@@ -1,23 +1,23 @@
 # ======================================================================#
 # Color Information														#
 # ======================================================================#
-white="\e[137m\]"
-gray="\e[037m\]"
-black="\e[030m\]"
-red="\e[031m\]"
-blue="\e[034m\]"
-green="\e[032m\]"
-yellow="\e[133m\]"
-cyan="\e[036m\]"
-purple="\e[035m\]"
-brown="\e[033m\]"
-dark_red="\e[131m\]"
-dark_blue="\e[134m\]"
-dark_green="\e[132m\]"
-dark_yellow="\e[133m\]"
-dark_cyan="\e[136m\]"
-dark_purple="\e[135m\]"
-dark_brown="\e[133m\]"
+white="\e[137m"
+gray="\e[037m"
+black="\e[030m"
+red="\e[031m"
+blue="\e[034m"
+green="\e[032m"
+yellow="\e[133m"
+cyan="\e[036m"
+purple="\e[035m"
+brown="\e[033m"
+dark_red="\e[131m"
+dark_blue="\e[134m"
+dark_green="\e[132m"
+dark_yellow="\e[133m"
+dark_cyan="\e[136m"
+dark_purple="\e[135m"
+dark_brown="\e[133m"
 
 # ======================================================================#
 # Prompt Information													#
@@ -55,19 +55,37 @@ PS1="\[$brown\]\A \[$cyan\]\u \[$brown\]\w \$ \[$green\]"
 # ======================================================================#
 #	LSCOLORS Information												#
 # ======================================================================#
-	# di = directory
-	# fi = file
-	# ln = symbolic link
-	# pi = fifo file
-	# so = socket file
-	# bd = block (buffered) special file
-	# cd = character (unbuffered) special file
-	# or = symbolic link pointing to a non-existent file (orphan)
-	# mi = non-existent file pointed to by a symbolic link (visible when you type ls -l)
-	# ex = file which is executable (ie. has 'x' set in permissions)
+	# listing order
+	# 1. directory
+	# 2. file
+	# 3. symbolic link
+	# 4. fifo file
+	# 5. socket file
+	# 6. block (buffered) special file
+	# 7. character (unbuffered) special file
+	# 8. symbolic link pointing to a non-existent file (orphan)
+	# 9. non-existent file pointed to by a symbolic link (visible when you type ls -l)
+	# 10. file which is executable (ie. has 'x' set in permissions)
 
-LSCOLORS='di=purple:fi=grey:ln=grey:pi=grey:so=grey:bd=grey:cd=grey:or=red:mi=red:ex=green'
+	# a black			# A bold black, usually shows up as dark grey
+	# b red				# B bold red
+	# c green			# C bold green
+	# d brown			# D bold brown, usually shows up as yellow
+	# e blue			# E bold blue
+	# f magenta			# F bold magenta
+	# g cyan			# G bold cyan
+	# h light grey		# H bold light grey; looks like bright white
+	# x default foreground or background
 
+LSCOLORS='GxFxCxDxBxegedabagaced'
+
+# ======================================================================#
+#	function for more visible line break								#
+# ======================================================================#
+# function ps_1 {
+# 	echo -n
+# 	echo "================================================================================"
+# }
 
 # ======================================================================#
 #	Exports																#

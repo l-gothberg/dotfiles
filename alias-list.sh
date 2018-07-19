@@ -1,7 +1,7 @@
 # ======================================================================#
 #	Basic Commands & Functions											#
 # ======================================================================#
-alias reload='source ~/.bash_profile && clear && printf "Behold!  I Am Bob, the caveman who has harnessed the free exchange of electrons!  Hail, Tesla!\n\n" && d=$(pwd)'
+alias reload='source ~/.bash_profile && clear && printf "Behold!  I Am Bob, the caveman who has harnessed the free exchange of electrons!\nHail, Tesla!\n\n"'
 
 alias c='clear; new_line=false'
 alias ls='ls -oaF'

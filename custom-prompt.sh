@@ -1,44 +1,78 @@
 # ======================================================================#
-#	Terminal Prompt Colors												#
+# Color Information														#
 # ======================================================================#
-Black="\e[0;30m"
-Blue="\e[0;34m"
-Green="\e[0;32m"
-Cyan="\e[0;36m"
-Red="\e[0;31m"
-Purple="\e[0;35m"
-Brown="\e[0;33m"
-Gray="\e[0;37m"
-Dark_Gray="\e[1;30m"
-Dark_Blue="\e[1;34m"
-Dark_Green="\e[1;32m"
-Dark_Cyan="\e[1;36m"
-Dark_Red="\e[1;31m"
-Dark_Purple="\e[1;35m"
-Yellow="\e[1;33m"
-White="\e[1;37m"
-end="\e[0m"
+white="\e[137m\]"
+gray="\e[037m\]"
+black="\e[030m\]"
+red="\e[031m\]"
+blue="\e[034m\]"
+green="\e[032m\]"
+yellow="\e[133m\]"
+cyan="\e[036m\]"
+purple="\e[035m\]"
+brown="\e[033m\]"
+dark_red="\e[131m\]"
+dark_blue="\e[134m\]"
+dark_green="\e[132m\]"
+dark_yellow="\e[133m\]"
+dark_cyan="\e[136m\]"
+dark_purple="\e[135m\]"
+dark_brown="\e[133m\]"
 
-# LS Color Options
-# a = black			A = dark grey
-# b = red			B = bold red
-# c = green			C = bold green
-# d = brown			D = yellow
-# e = blue			E = bold blue
-# f = magenta		F = magenta
-# g = cyan			G = cyan
-# h = grey			H = white
-# x = default
+# ======================================================================#
+# Prompt Information													#
+# ======================================================================#
+	# \a = bell character
+	# \d = date, in “Weekday Month Date” format (e.g., “Tue May 26”)
+	# \D{} = date, in strftime(3) format (NOTE: braces are required, format may be specified, blank defaults to locale settings)
+	# \e = escape character
+	# \h = hostname, up to first '.'
+	# \H = hostname, full
+	# \j = number of jobs currently managed by shell
+	# \l = basename of the shell’s terminal device name
+	# \n = newline
+	# \r = carriage return
+	# \s = name of the shell, the basename of $0 (the portion following the final slash)
+	# \t = time, in 24-hour HH:MM:SS format
+	# \T = time, in 12-hour HH:MM:SS format
+	# \@ = time, in 12-hour am/pm format
+	# \A = time, in 24-hour HH:MM format
+	# \u = username of the current user
+	# \v = version of Bash (e.g., 2.00)
+	# \V = release of Bash, version + patchlevel (e.g., 2.00.0)
+	# \w = current working directory, with $HOME abbreviated with a tilde (uses the $PROMPT_DIRTRIM variable)
+	# \W = basename of $PWD, with $HOME abbreviated with a tilde
+	# \! = history number of this command
+	# \# = command number of this command
+	# \$ = if effective uid is 0, #, otherwise $
+	# \nnn = character whose ASCII code is the octal value nnn
+	# \\ = backslash
+	# \[ = begins a sequence of non-printing characters (NOTE: This could be used to embed a terminal control sequence into the prompt.)
+	# \] = ends a sequence of non-printing characters started by \[
+
+PS1="\[$brown\]\A \[$cyan\]\u \[$brown\]\w \$ \[$green\]"
+
+# ======================================================================#
+#	LSCOLORS Information												#
+# ======================================================================#
+	# di = directory
+	# fi = file
+	# ln = symbolic link
+	# pi = fifo file
+	# so = socket file
+	# bd = block (buffered) special file
+	# cd = character (unbuffered) special file
+	# or = symbolic link pointing to a non-existent file (orphan)
+	# mi = non-existent file pointed to by a symbolic link (visible when you type ls -l)
+	# ex = file which is executable (ie. has 'x' set in permissions)
+
+LSCOLORS='di=purple:fi=grey:ln=grey:pi=grey:so=grey:bd=grey:cd=grey:or=red:mi=red:ex=green'
 
 
+# ======================================================================#
+#	Exports																#
+# ======================================================================#
 export CLICOLOR=true
 export CLICOLOR_FORCE=true
-
-new_line=false
-
-function ps_1 {
-		echo "================================================================================"
-}
-
-export PS1="\[$Brown\]\A \[$Cyan\]\u \[$Brown\]\w \$ \[$Green\]"
-export LSCOLORS="excxbxdxcxexexfxdxgxdx"
+export PS1
+export LSCOLORS

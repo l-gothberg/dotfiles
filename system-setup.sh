@@ -1,3 +1,5 @@
+
+
 #####
 echo "Setting default PATH..."
 echo "export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin" >> setup-log.txt
@@ -5,86 +7,101 @@ export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 
 #####
 echo "Installing Homebrew..."
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"  >> setup-log.txt
+echo "Installing Homebrew..." >> setup-log.txt
+yes "" | /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" >> setup-log.txt
 
 echo "Tapping Casks..."
+echo "Tapping Casks..." >> setup-log.txt
 brew install caskroom/cask/brew-cask >> setup-log.txt
 brew tap homebrew/cask-drivers >> setup-log.txt
 brew tap homebrew/cask-fonts >> setup-log.txt
 brew tap caskroom/versions >> setup-log.txt
 
 echo "Installing Applications..."
-brew install autojump
-brew install bash-completion
-brew install git
-brew install node
-brew install python
-brew install openssl
-brew install ruby
-brew install youtube-dl
+echo "Installing Applications..." >> setup-log.txt
+brew install autojump >> setup-log.txt
+brew install bash-completion >> setup-log.txt
+brew install git >> setup-log.txt
+brew install node >> setup-log.txt
+brew install python >> setup-log.txt
+brew install openssl >> setup-log.txt
+brew install ruby >> setup-log.txt
+brew install youtube-dl >> setup-log.txt
 
 # Cask Applications
 #brew cask install adobe-acrobat-pro
-brew cask install adobe-acrobat-reader
-brew cask install android-studio
-brew cask install arduino
-brew cask install atom
-brew cask install coda
-brew cask install discord
-brew cask install etcher
-brew cask install firefox
-brew cask install github
-brew cask install gitkraken
-brew cask install google-chrome
-brew cask install handbrake
-brew cask install intellij-idea-ce
-brew cask install iterm2
-brew cask install istat-menus
-brew cask install logitech-gaming-software
-brew cask install slack
-brew cask install steam
-brew cask install sublime-text
-brew cask install virtualbox
-brew cask install vlc
+brew cask install adobe-acrobat-reader >> setup-log.txt
+brew cask install android-studio >> setup-log.txt
+brew cask install arduino >> setup-log.txt
+brew cask install atom >> setup-log.txt
+brew cask install coda >> setup-log.txt
+brew cask install discord >> setup-log.txt
+brew cask install etcher >> setup-log.txt
+brew cask install firefox >> setup-log.txt
+brew cask install github >> setup-log.txt
+brew cask install gitkraken >> setup-log.txt
+brew cask install google-chrome >> setup-log.txt
+brew cask install handbrake >> setup-log.txt
+brew cask install intellij-idea-ce >> setup-log.txt
+brew cask install iterm2 >> setup-log.txt
+brew cask install istat-menus >> setup-log.txt
+brew cask install logitech-gaming-software >> setup-log.txt
+brew cask install slack >> setup-log.txt
+brew cask install steam >> setup-log.txt
+brew cask install sublime-text >> setup-log.txt
+brew cask install virtualbox >> setup-log.txt
+brew cask install vlc >> setup-log.txt
 
 # Fonts
-echo "Installing Fonts from web..."
-brew cask install font-allerta-stencil
-brew cask install font-architects-daughter
-brew cask install font-fira-code
-brew cask install font-inconsolata
-brew cask install font-lato
-brew cask install font-nothing-you-could-do
-brew cask install font-opendyslexic
-brew cask install font-stardos-stencil
-brew cask install font-waltograph
+echo "Installing Fonts from Web..."
+echo "Installing Fonts from Web..." >> setup-log.txt
+brew cask install font-allerta-stencil >> setup-log.txt
+brew cask install font-architects-daughter >> setup-log.txt
+brew cask install font-fira-code >> setup-log.txt
+brew cask install font-inconsolata >> setup-log.txt
+brew cask install font-lato >> setup-log.txt
+brew cask install font-nothing-you-could-do >> setup-log.txt
+brew cask install font-opendyslexic >> setup-log.txt
+brew cask install font-stardos-stencil >> setup-log.txt
+brew cask install font-waltograph >> setup-log.txt
 
+#####
 echo "Copying User Fonts to system..."
-cp -iprv ./Fonts/* ~/Library/Fonts/*
+echo "Copying User Fonts to system..." >> setup-log.txt
+cp -iprv ./Fonts/* ~/Library/Fonts/* >> setup-log.txt
 
 #####
 echo "Installing Ruby Gems..."
-gem install bundler
-gem install rb-applescript
+echo "Installing Ruby Gems..." >> setup-log.txt
+gem install bundler >> setup-log.txt
+gem install rb-applescript >> setup-log.txt
+gem install sass >> setup-log.txt
 
 #####
 echo "Performing Cleanup..."
-brew cleanup --force
-rm -rf /Library/Caches/Homebrew/*
+echo "Performing Cleanup..." >> setup-log.txt
+brew cleanup --force >> setup-log.txt
+rm -rf /Library/Caches/Homebrew/* >> setup-log.txt
 
 #####
 echo "Creating simlink to iCloud Folder..."
-ln -s ~/Library/Mobile\ Documents/com~apple~CloudDocs ~/usr/local/bin/iCloud\ Drive
+echo "Creating simlink to iCloud Folder..." >> setup-log.txt
+ln -s ~/Library/Mobile\ Documents/com~apple~CloudDocs ~/usr/local/bin/iCloud\ Drive >> setup-log.txt
 
 ####
 echo "Creating simlink for Sublme Text..."
-ln -s /Applications/Sublime Text.app/Contents/SharedSupport/bin/subl /usr/local/bin/subl
+echo "Creating simlink for Sublme Text..." >> setup-log.txt
+ln -s /Applications/Sublime Text.app/Contents/SharedSupport/bin/subl /usr/local/bin/subl >> setup-log.txt
 
 #####
 echo "Moving profiles into place..."
-cp -iprv ./alias-list.sh ~/.alias-list
-cp -iprv ./bash_profile.sh ~/.bash_profile
-cp -iprv ./brew-application-additions ~/.brew-application-additions
-cp -iprv ./custom-prompt.sh ~/.custom-prompt
-cp -iprv ./git-branch-info.sh ~/.git-bash-info
-source ~/.bash_profile
+echo "Moving profiles into place..." >> setup-log.txt
+cp -iprv ./alias-list.sh ~/.alias-list >> setup-log.txt
+cp -iprv ./bash_profile.sh ~/.bash_profile >> setup-log.txt
+cp -iprv ./brew-application-additions ~/.brew-application-additions >> setup-log.txt
+cp -iprv ./custom-prompt.sh ~/.custom-prompt >> setup-log.txt
+cp -iprv ./git-branch-info.sh ~/.git-bash-info >> setup-log.txt
+source ~/.bash_profile >> setup-log.txt
+
+# Move the log of all setup into
+mv setup-log.txt "setup-log - $(date +%Y_%m_%d__%H%M).txt"

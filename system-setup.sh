@@ -1,4 +1,4 @@
-
+sudo echo "Starting System Setup..."
 
 #####
 echo "Setting default PATH..."
@@ -22,6 +22,7 @@ echo "Installing Applications..." >> setup-log.txt
 brew install autojump >> setup-log.txt
 brew install bash-completion >> setup-log.txt
 brew install git >> setup-log.txt
+brew install mas >> setup-log.txt
 brew install node >> setup-log.txt
 brew install python >> setup-log.txt
 brew install openssl >> setup-log.txt
@@ -98,10 +99,40 @@ echo "Moving profiles into place..."
 echo "Moving profiles into place..." >> setup-log.txt
 cp -iprv ./alias-list.sh ~/.alias-list >> setup-log.txt
 cp -iprv ./bash_profile.sh ~/.bash_profile >> setup-log.txt
-cp -iprv ./brew-application-additions ~/.brew-application-additions >> setup-log.txt
 cp -iprv ./custom-prompt.sh ~/.custom-prompt >> setup-log.txt
 cp -iprv ./git-branch-info.sh ~/.git-bash-info >> setup-log.txt
+
+#####
+echo "Installing App Store Applications"
+echo "Installing App Store Applications" >> setup-log.txt
+./app-store-applications.sh
+
+#####
+echo "Generating SSH key..."
+echo "Generating SSH key..." >> setup-log.txt
+ssh-keygen -t rsa -b 4096 -C "leo.gothberg@gmail.com - generated on $(date +%Y_%m_%d__%H%M)"
+echo "Starting SSH Agent..."
+echo "Starting SSH Agent..." >> setup-log.txt
+eval "$(ssh-agent -s)"
+echo "Creating SSH config file..."
+echo "Creating SSH config file..." >> setup-log.txt
+echo "Host *" >> ~/.ssh/config
+echo " AddKeysToAgent yes" >> ~/.ssh/config
+echo " UseKeychain yes" >> ~/.ssh/config
+echo " IdentityFile ~/.ssh/id_rsa" >> ~/.ssh/config
+echo "Adding key to SSH Agent..."
+echo "Adding key to SSH Agent..." >> setup-log.txt
+ssh-add -K ~/.ssh/id_rsa
+
+
+#####
+echo "Setting system defaults..."
+echo "Setting system defaults..." >> setup-log.txt
+./set-system-defaults.sh
 source ~/.bash_profile >> setup-log.txt
 
 # Move the log of all setup into
 mv setup-log.txt "setup-log - $(date +%Y_%m_%d__%H%M).txt"
+
+# display a message to indicate the process is finished
+echo "********************  SETUP COMPLETE  ********************"

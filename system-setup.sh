@@ -6,6 +6,29 @@ echo "export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin" >> setup-log.txt
 export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 
 #####
+echo "Checking for Updates..."
+echo "Checking for Updates..." >> setup-log.txt
+sudo softwareupdate -ia
+
+#####
+# allow for restart if needed after updates
+restart() {
+	read -n 1 -p "Is a restart required to complete updates? (y/n)" "restartrequired"
+	if [ "$restartrequired" == "y" ]; then
+		sudo reboot now
+	elif [ "$restartrequired" == "n" ]; then
+		quitprogram
+	else
+		echo "Invalid selection.  Select 'y' or 'n'..."
+		restart
+}
+
+#####
+echo "Installing App Store Applications"
+echo "Installing App Store Applications" >> setup-log.txt
+./app-store-applications.sh
+
+#####
 echo "Installing Homebrew..."
 echo "Installing Homebrew..." >> setup-log.txt
 yes "" | /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" >> setup-log.txt
@@ -75,7 +98,7 @@ cp -iprv ./Fonts/* ~/Library/Fonts/* >> setup-log.txt
 echo "Installing Ruby Gems..."
 echo "Installing Ruby Gems..." >> setup-log.txt
 gem install bundler >> setup-log.txt
-gem install rb-applescript >> setup-log.txt
+gem install rb-appscript >> setup-log.txt
 gem install sass >> setup-log.txt
 
 #####
@@ -103,11 +126,6 @@ cp -iprv ./custom-prompt.sh ~/.custom-prompt >> setup-log.txt
 cp -iprv ./git-branch-info.sh ~/.git-bash-info >> setup-log.txt
 
 #####
-echo "Installing App Store Applications"
-echo "Installing App Store Applications" >> setup-log.txt
-./app-store-applications.sh
-
-#####
 echo "Generating SSH key..."
 echo "Generating SSH key..." >> setup-log.txt
 ssh-keygen -t rsa -b 4096 -C "leo.gothberg@gmail.com - generated on $(date +%Y_%m_%d__%H%M)"
@@ -123,7 +141,6 @@ echo " IdentityFile ~/.ssh/id_rsa" >> ~/.ssh/config
 echo "Adding key to SSH Agent..."
 echo "Adding key to SSH Agent..." >> setup-log.txt
 ssh-add -K ~/.ssh/id_rsa
-
 
 #####
 echo "Setting system defaults..."

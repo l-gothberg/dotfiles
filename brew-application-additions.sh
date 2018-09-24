@@ -1,6 +1,6 @@
 # youtube-dl
 	# Video Title Only
-	function youtube { url=$1; youtube-dl --yes-playlist -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best' -o "$(pwd)/%(title)s.%(ext)s" "$url"; }
+	function youtube { url=$1; youtube-dl --yes-playlist -f 'best[ext=mp4]/best' -o "$(pwd)/%(title)s.%(ext)s" "$url"; }
 	
 	# Uploader Name - Video Title
 	# function youtube { url=$1; youtube-dl --yes-playlist -o "$(pwd)/%(uploader)s - %(title)s.%(ext)s" "$url"; }

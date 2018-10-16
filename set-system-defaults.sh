@@ -25,7 +25,7 @@ END
 # ==============================================
 # SYSTEM SETTINGS
 # ==============================================
-
+echo "set completion-ignore-case On" >> ~/.inputrc	# set terminal autocomplete to case-insensitive
 
 # ==============================================
 # Files and folders

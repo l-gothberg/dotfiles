@@ -41,11 +41,13 @@ brew install ruby
 brew install youtube-dl
 
 # Cask Applications
+brew cask install 1password
 #brew cask install adobe-acrobat-pro
 brew cask install adobe-acrobat-reader
 brew cask install android-studio
 brew cask install arduino
 brew cask install atom
+brew cask install basecamp
 brew cask install coda
 brew cask install discord
 brew cask install etcher

@@ -41,6 +41,9 @@ mas install 1055511498
 # Decked Builder
 mas install 406479348
 
+# Autodesk Fusion360
+mas install 868968810
+
 # iConvert Icons
 mas install 515197296
 

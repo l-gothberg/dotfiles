@@ -88,7 +88,6 @@ echo "Installing Ruby Gems..."
 yes "" | gem install bundler
 # gem install rb-appscript
 gem install sass
-./app-store-applications.sh
 
 #####
 echo "Performing Cleanup..."
@@ -97,6 +96,7 @@ rm -rf /Library/Caches/Homebrew/*
 
 #####
 echo "Installing App Store Applications"
+./app-store-applications.sh
 
 #####
 echo "Creating simlink to iCloud Folder..."

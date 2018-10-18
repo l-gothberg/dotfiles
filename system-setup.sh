@@ -76,6 +76,7 @@ brew cask install font-inconsolata
 brew cask install font-lato
 brew cask install font-nothing-you-could-do
 brew cask install font-opendyslexic
+brew cask install font-roboto
 brew cask install font-stardos-stencil
 brew cask install font-waltograph
 

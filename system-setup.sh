@@ -61,6 +61,7 @@ brew cask install iterm2
 brew cask install istat-menus
 brew cask install java
 brew cask install logitech-gaming-software
+brew cask install sketch
 brew cask install slack
 brew cask install steam
 brew cask install sublime-text

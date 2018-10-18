@@ -22,6 +22,7 @@ alias mkdir='mkdir -pv'
 alias cp='cp -ivpR'
 alias brew-update='brew update && brew upgrade && brew cleanup --prune=0'
 alias software-update='softwareupdate -ia'
+function h { history | grep "$1"; }
 function mkdircd { mkdir -p "$1" && cd "$1"; }			# Creates a folder and gets inside of it
 function trash { command mv "$@" ~/.Trash ; }			# Moves a file to the Mac OSX trash
 

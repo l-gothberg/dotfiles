@@ -86,6 +86,10 @@ echo "Copying User Fonts to system..."
 cp -iprv ./Fonts/*.* ~/Library/Fonts/
 
 #####
+echo "Installing Node Packages..."
+npm install -g live-server
+
+#####
 echo "Installing Ruby Gems..."
 yes "" | gem install bundler
 # gem install rb-appscript

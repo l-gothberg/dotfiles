@@ -63,6 +63,7 @@ brew cask install java
 brew cask install logitech-gaming-software
 brew cask install sketch
 brew cask install slack
+brew cask install spotify
 brew cask install steam
 brew cask install sublime-text
 brew cask install virtualbox

@@ -32,6 +32,7 @@ brew tap caskroom/versions
 echo "Installing Applications..."
 brew install autojump
 brew install bash-completion
+brew install docker
 brew install git
 brew install mas
 brew install node

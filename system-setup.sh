@@ -66,6 +66,7 @@ brew cask install slack
 brew cask install spotify
 brew cask install steam
 brew cask install sublime-text
+brew cask install visual-studio
 brew cask install virtualbox
 brew cask install vlc
 

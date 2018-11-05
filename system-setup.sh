@@ -55,6 +55,7 @@ brew cask install etcher
 brew cask install firefox
 brew cask install github
 brew cask install gitkraken
+brew cask install google-backup-and-sync
 brew cask install google-chrome
 brew cask install handbrake
 brew cask install intellij-idea-ce

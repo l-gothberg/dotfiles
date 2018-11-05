@@ -87,7 +87,7 @@ brew cask install font-waltograph
 
 #####
 echo "Copying User Fonts to system..."
-cp -iprv ./Fonts/*.* ~/Library/Fonts/
+cp -iprv ./fonts/*.* ~/Library/Fonts/
 
 #####
 echo "Installing Node Packages..."

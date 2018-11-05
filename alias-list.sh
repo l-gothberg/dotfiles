@@ -40,5 +40,5 @@ alias rspec='clear && rspec'
 # ======================================================================#
 #	Git Commands														#
 # ======================================================================#
-function git-push { message=$@; git add -A && git commit -m "$message" && git push; }
+function git-push { message=$@; git add -A && git commit -m "$message" && git push --all; }
 alias git-run='git add -A && git commit -am'

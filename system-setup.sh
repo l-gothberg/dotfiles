@@ -32,7 +32,7 @@ brew tap caskroom/versions
 echo "Installing Applications..."
 brew install autojump
 brew install bash-completion
-brew install docker
+# brew install docker
 brew install git
 brew install mas
 brew install node
@@ -109,8 +109,8 @@ echo "Installing App Store Applications"
 ./app-store-applications.sh
 
 #####
-echo "Creating simlink to iCloud Folder..."
-ln -s ~/Library/Mobile\ Documents/com~apple~CloudDocs ~/usr/local/bin/iCloud\ Drive
+# echo "Creating simlink to iCloud Folder..."
+# ln -s ~/Library/Mobile\ Documents/com~apple~CloudDocs ~/usr/local/bin/iCloud\ Drive
 
 #####
 echo "Creating simlink for Sublme Text..."

@@ -121,6 +121,13 @@ echo "Creating github folder on Desktop..."
 mkdir ~/Desktop/github
 
 #####
+echo "Cloning Sublime Text Repository and moving items into place."
+cd ~/Library/Application\ Support/
+rm -rf Sublime\ Text\ 3/
+git clone git@github.com:l-gothberg/sublime-text-3.git
+mv sublime-text-3/ Sublime\ Text\ 3/
+
+#####
 echo "Moving profiles into place..."
 cp -iprv ./alias-list.sh ~/.alias-list
 cp -iprv ./bash_profile.sh ~/.bash_profile

@@ -54,7 +54,7 @@ brew cask install coda
 brew cask install discord
 brew cask install etcher
 brew cask install firefox
-brew cask install github
+# brew cask install github
 brew cask install gitkraken
 brew cask install google-backup-and-sync
 brew cask install google-chrome

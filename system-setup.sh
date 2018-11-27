@@ -155,7 +155,7 @@ echo "Setting system defaults..."
 source ~/.bash_profile
 
 # Move the log of all setup into
-mv setup-log.txt "setup-log - $(date +%Y_%m_%d__%H%M).txt"
+# mv setup-log.txt "setup-log - $(date +%Y_%m_%d__%H%M).txt"
 
 # display a message to indicate the process is finished
 echo "********************  SETUP COMPLETE  ********************"

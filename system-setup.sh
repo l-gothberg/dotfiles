@@ -1,23 +1,22 @@
 sudo echo "Starting System Setup..."
 
 #####
+# function that allows for restart if needed after updates
+function restart() {
+	read -n 1 -p "Is a restart required to complete updates? (y/n)" restartrequired
+	if [ "$restartrequired" == "y" ]; then
+		sudo reboot now
+	fi
+}
+
+#####
 echo "Setting default PATH..."
 export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 
 #####
 echo "Checking for Updates..."
 sudo softwareupdate -ia
-
-#####
-# allow for restart if needed after updates
-restart() {
-	read -n 1 -p "Is a restart required to complete updates? (y/n)" restartrequired
-	if [ "$restartrequired" == "y" ]; then
-		sudo reboot now
-	else
-		quitprogram
-	fi
-}
+restart()
 
 #####
 echo "Installing Homebrew..."

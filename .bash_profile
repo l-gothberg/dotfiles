@@ -12,7 +12,7 @@ export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 export EDITOR='subl'
 
 source ~/.alias-list
-source ~/.brew-application-additions
+source ~/.brew-functions
 source ~/.custom-prompt
 source ~/.git-branch-info
 

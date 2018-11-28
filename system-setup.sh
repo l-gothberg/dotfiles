@@ -2,7 +2,7 @@ sudo echo "Starting System Setup..."
 
 #####
 # function that allows for restart if needed after updates
-function restart() {
+restart() {
 	read -n 1 -p "Is a restart required to complete updates? (y/n)" restartrequired
 	if [ "$restartrequired" == "y" ]; then
 		sudo reboot now
@@ -14,16 +14,30 @@ echo "Setting default PATH..."
 export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 
 #####
+echo "Moving profiles into place..."
+cp -iprv ./.alias-list ~/.alias-list
+cp -iprv ./.bash_profile ~/.bash_profile
+cp -iprv ./.brew-functions ~/.brew-functions
+cp -iprv ./.custom-prompt ~/.custom-prompt
+cp -iprv ./.git-branch-info ~/.git-bash-info
+cp -iprv ./.gitignore ~/.gitignore
+cp -iprv ./.inputrc ~/.inputrc
+
+#####
+echo "Setting system defaults..."
+./set-system-defaults.sh
+source ~/.bash_profile
+
+#####
 echo "Checking for Updates..."
 sudo softwareupdate -ia
-restart()
+restart
 
 #####
 echo "Installing Homebrew..."
 yes "" | /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
 echo "Tapping Casks..."
-brew install caskroom/cask/brew-cask
 brew tap homebrew/cask-drivers
 brew tap homebrew/cask-fonts
 brew tap caskroom/versions
@@ -48,10 +62,10 @@ brew cask install adobe-acrobat-reader
 brew cask install android-studio
 brew cask install arduino
 brew cask install atom
+brew cask install balenaetcher
 brew cask install basecamp
 brew cask install coda
 brew cask install discord
-brew cask install etcher
 brew cask install firefox
 # brew cask install github
 brew cask install gitkraken
@@ -86,6 +100,12 @@ brew cask install font-stardos-stencil
 brew cask install font-waltograph
 
 #####
+echo "Performing Cleanup..."
+brew cleanup --force
+rm -rf /Library/Caches/Homebrew/*
+echo "Brew installs complete."
+
+#####
 echo "Copying User Fonts to system..."
 cp -iprv ./fonts/*.* ~/Library/Fonts/
 
@@ -96,14 +116,18 @@ npm install -g firebase-tools
 
 #####
 echo "Installing Ruby Gems..."
-yes "" | gem install bundler
-# gem install rb-appscript
-gem install sass
+yes "" | sudo gem install bundler
+yes "" | sudo gem install sass
+yes "" | sudo gem install jekyll
+yes "" | sudo gem install rspec
 
 #####
-echo "Performing Cleanup..."
-brew cleanup --force
-rm -rf /Library/Caches/Homebrew/*
+echo "Moving iTerm2 profile into place..."
+cp -iprv ./settings\ profiles/iterm_settings.json ~/Library/Application Support/iTerm2/DynamicProfiles/settings.json
+
+#####
+echo "Moving custom destops into place..."
+cp -iprv ./desktops/* ~/Pictures/
 
 #####
 echo "Installing App Store Applications"
@@ -118,41 +142,12 @@ echo "Creating simlink for Sublme Text..."
 ln -s /Applications/Sublime Text.app/Contents/SharedSupport/bin/subl /usr/local/bin/subl
 
 #####
-echo "Creating github folder on Desktop..."
-mkdir ~/Desktop/github
-
-#####
 echo "Cloning Sublime Text Repository and moving items into place."
 cd ~/Library/Application\ Support/
 rm -rf Sublime\ Text\ 3/
 git clone git@github.com:l-gothberg/sublime-text-3.git
 mv sublime-text-3/ Sublime\ Text\ 3/
-
-#####
-echo "Moving profiles into place..."
-cp -iprv ./alias-list.sh ~/.alias-list
-cp -iprv ./bash_profile.sh ~/.bash_profile
-cp -iprv ./brew-application-additions.sh ~/.brew-application-additions
-cp -iprv ./custom-prompt.sh ~/.custom-prompt
-cp -iprv ./git-branch-info.sh ~/.git-bash-info
-
-#####
-# echo "Generating SSH key..."
-# ssh-keygen -t rsa -b 4096 -C "leo.gothberg@gmail.com - generated on $(date +%Y_%m_%d__%H%M)"
-# echo "Starting SSH Agent..."
-# eval "$(ssh-agent -s)"
-# echo "Creating SSH config file..."
-# echo "Host *" >> ~/.ssh/config
-# echo " AddKeysToAgent yes" >> ~/.ssh/config
-# echo " UseKeychain yes" >> ~/.ssh/config
-# echo " IdentityFile ~/.ssh/id_rsa" >> ~/.ssh/config
-# echo "Adding key to SSH Agent..."
-# ssh-add -K ~/.ssh/id_rsa
-
-#####
-echo "Setting system defaults..."
-./set-system-defaults.sh
-source ~/.bash_profile
+cd
 
 # Move the log of all setup into
 # mv setup-log.txt "setup-log - $(date +%Y_%m_%d__%H%M).txt"

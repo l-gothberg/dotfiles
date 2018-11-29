@@ -67,6 +67,7 @@ brew cask install basecamp
 brew cask install coda
 brew cask install discord
 brew cask install firefox
+brew cask install geekbench
 # brew cask install github
 brew cask install gitkraken
 brew cask install google-backup-and-sync

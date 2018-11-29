@@ -26,6 +26,9 @@ mas install 497799835
 # App Cleaner & Uninstaller
 mas install 1013897218
 
+# Autodesk Fusion360
+mas install 868968810
+
 # BetterSnapTool
 mas install 417375580
 
@@ -41,8 +44,8 @@ mas install 1055511498
 # Decked Builder
 mas install 406479348
 
-# Autodesk Fusion360
-mas install 868968810
+# Fantastical 2
+mas install 975937182
 
 # iConvert Icons
 mas install 515197296

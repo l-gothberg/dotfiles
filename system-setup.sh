@@ -112,8 +112,9 @@ cp -iprv ./fonts/*.* ~/Library/Fonts/
 
 #####
 echo "Installing Node Packages..."
-npm install -g live-server
 npm install -g firebase-tools
+npm install -g live-server
+npm install -g particle-cli
 
 #####
 echo "Installing Ruby Gems..."

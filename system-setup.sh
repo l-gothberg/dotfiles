@@ -11,7 +11,7 @@ restart() {
 
 #####
 echo "Setting default PATH..."
-export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+export PATH=/usr/local/bin:/usr/bin:/usr/bin/ruby:/bin:/usr/sbin:/sbin
 
 #####
 echo "Moving profiles into place..."

@@ -48,6 +48,7 @@ brew install bash-completion
 # brew install docker
 brew install ffmpeg
 brew install git
+brew install gnupg
 brew install mas
 brew install node
 brew install python

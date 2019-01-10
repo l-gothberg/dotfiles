@@ -14,7 +14,7 @@ alias python='python3'
 alias icloud="cd ~/iCloud\ Drive"
 alias mono='mono --arch=32'
 alias cd-subl='cd ~/Library/Application\ Support/Sublime\ Text\ 3'
-alias push-subl='~/Library/Application\ Support/Sublime\ Text\ 3 && git add -A && git commit -am "Perodic Automatic Backup." && git push --all'
+alias push-subl='cd ~/Library/Application\ Support/Sublime\ Text\ 3 && git add -A && git commit -am "Perodic Automatic Backup." && git push --all'
 alias clone-subl='cd ~/Library/Application\ Support/ && rm Sublime\ Text\ 3 && git clone git@github.com:l-gothberg/sublime-text-3.git && mv sublime-text-3/ Sublime\ Text\ 3/ && exit'
 alias rm='rm -rfv'
 alias mv='mv -iv'
@@ -24,7 +24,7 @@ alias brew-update='brew update && brew upgrade && brew cleanup --prune=0'
 alias software-update='softwareupdate -ia --restart'
 function h { history | grep "$1"; }
 function mkcd { mkdir -p "$1" && cd "$1"; }			# Creates a folder and gets inside of it
-function trash { command mv "$@" ~/.Trash ; }			# Moves a file to the Mac OSX trash
+function trash { command mv "$@" ~/.Trash ; }		# Moves a file to the Mac OSX trash
 
 # ======================================================================#
 #	OSU Server Commands											#

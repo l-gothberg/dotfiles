@@ -65,6 +65,7 @@ brew cask install arduino
 brew cask install atom
 brew cask install balenaetcher
 brew cask install basecamp
+brew cask install canary
 brew cask install coda
 brew cask install discord
 brew cask install firefox

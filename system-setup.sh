@@ -88,6 +88,7 @@ brew cask install sublime-text
 brew cask install visual-studio-code
 brew cask install virtualbox
 brew cask install vlc
+brew cask install wireshark
 
 # Fonts
 echo "Installing Fonts from Web..."

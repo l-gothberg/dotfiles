@@ -74,6 +74,7 @@ brew cask install geekbench
 brew cask install gitkraken
 brew cask install google-backup-and-sync
 brew cask install google-chrome
+brew cask install gpg-suite
 brew cask install handbrake
 brew cask install intellij-idea-ce
 brew cask install iterm2

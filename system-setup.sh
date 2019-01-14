@@ -121,6 +121,8 @@ npm install -g firebase
 npm install -g firebase-tools
 npm install -g live-server
 npm install -g particle-cli
+npm install -g vue
+npm install -g @vue/cli
 
 #####
 echo "Installing Ruby Gems..."

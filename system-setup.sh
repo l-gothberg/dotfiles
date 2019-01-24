@@ -43,6 +43,7 @@ brew tap homebrew/cask-fonts
 brew tap caskroom/versions
 
 echo "Installing Applications..."
+brew install awscli
 brew install autojump
 brew install bash-completion
 # brew install docker

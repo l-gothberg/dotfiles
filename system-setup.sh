@@ -119,6 +119,8 @@ cp -iprv ./fonts/*.* ~/Library/Fonts/
 
 #####
 echo "Installing Node Packages..."
+npm install -g aws
+npm install -g aws-sdk
 npm install -g firebase
 npm install -g firebase-tools
 npm install -g live-server

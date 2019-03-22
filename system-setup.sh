@@ -160,4 +160,6 @@ cd
 # mv setup-log.txt "setup-log - $(date +%Y_%m_%d__%H%M).txt"
 
 # display a message to indicate the process is finished
+echo "**********************************************************"
 echo "********************  SETUP COMPLETE  ********************"
+echo "**********************************************************"

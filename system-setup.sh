@@ -1,28 +1,19 @@
 sudo echo "Starting System Setup..."
 
 #####
-# function that allows for restart if needed after updates
-restart() {
-    read -n 1 -p "Is a restart required to complete updates? (y/n)" restartrequired
-    if [ "$restartrequired" == "y" ]; then
-        sudo reboot now
-    fi
-}
-
-#####
 echo "Setting default PATH..."
 export PATH=/usr/local/bin:/usr/bin:/usr/bin/ruby:/bin:/usr/sbin:/sbin
 
 #####
 echo "Moving profiles into place..."
-cp -iprv ./.config/ ~/.config/
-cp -iprv ./.alias-list ~/.alias-list
-cp -iprv ./.bash_profile ~/.bash_profile
-cp -iprv ./.custom-functions ~/.custom-functions
-cp -iprv ./.custom-prompt ~/.custom-prompt
-cp -iprv ./.git-branch-info ~/.git-branch-info
-cp -iprv ./.gitignore ~/.gitignore
-cp -iprv ./.inputrc ~/.inputrc
+cp -ipvR ./.config/ ~/.config/
+cp -ipvR ./.alias-list ~/.alias-list
+cp -ipvR ./.bash_profile ~/.bash_profile
+cp -ipvR ./.custom-functions ~/.custom-functions
+cp -ipvR ./.custom-prompt ~/.custom-prompt
+cp -ipvR ./.git-branch-info ~/.git-branch-info
+cp -ipvR ./.gitignore ~/.gitignore
+cp -ipvR ./.inputrc ~/.inputrc
 
 #####
 echo "Setting system defaults..."
@@ -116,7 +107,7 @@ echo "Brew installs complete."
 
 #####
 echo "Copying User Fonts to system..."
-cp -iprv ./fonts/*.* ~/Library/Fonts/
+cp -ipvR ./fonts/*.* ~/Library/Fonts/
 
 #####
 echo "Installing Node Packages..."
@@ -139,11 +130,11 @@ yes "" | sudo gem install rspec
 
 #####
 echo "Moving iTerm2 profile into place..."
-cp -iprv ./settings-profiles/iterm_settings.json ~/Library/Application\ Support/iTerm2/DynamicProfiles/settings.json
+cp -ipvR ./settings-profiles/iterm_settings.json ~/Library/Application\ Support/iTerm2/DynamicProfiles/settings.json
 
 #####
 echo "Moving custom destops into place..."
-cp -iprv ./desktops/* ~/Pictures/
+cp -ipvR ./desktops/* ~/Pictures/
 
 #####
 echo "Installing App Store Applications"

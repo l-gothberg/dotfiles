@@ -1,0 +1,5 @@
+# Specify output template.
+-o "~/Downloads/YouTube/%(title)s.%(ext)s"
+
+# Specify video format.
+-f 'bestvideo[ext=mp4,height>=1080]+bestaudio[ext=m4a]'

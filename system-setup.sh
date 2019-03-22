@@ -3,10 +3,10 @@ sudo echo "Starting System Setup..."
 #####
 # function that allows for restart if needed after updates
 restart() {
-	read -n 1 -p "Is a restart required to complete updates? (y/n)" restartrequired
-	if [ "$restartrequired" == "y" ]; then
-		sudo reboot now
-	fi
+    read -n 1 -p "Is a restart required to complete updates? (y/n)" restartrequired
+    if [ "$restartrequired" == "y" ]; then
+        sudo reboot now
+    fi
 }
 
 #####
@@ -15,11 +15,12 @@ export PATH=/usr/local/bin:/usr/bin:/usr/bin/ruby:/bin:/usr/sbin:/sbin
 
 #####
 echo "Moving profiles into place..."
+cp -iprv ./.config/ ~/.config/
 cp -iprv ./.alias-list ~/.alias-list
 cp -iprv ./.bash_profile ~/.bash_profile
-cp -iprv ./.brew-functions ~/.brew-functions
+cp -iprv ./.custom-functions ~/.custom-functions
 cp -iprv ./.custom-prompt ~/.custom-prompt
-cp -iprv ./.git-branch-info ~/.git-bash-info
+cp -iprv ./.git-branch-info ~/.git-branch-info
 cp -iprv ./.gitignore ~/.gitignore
 cp -iprv ./.inputrc ~/.inputrc
 
@@ -30,8 +31,7 @@ source ~/.bash_profile
 
 #####
 echo "Checking for Updates..."
-sudo softwareupdate -ia
-restart
+sudo softwareupdate -iaR
 
 #####
 echo "Installing Homebrew..."
@@ -59,8 +59,9 @@ brew install youtube-dl
 
 # Cask Applications
 brew cask install 1password
-#brew cask install adobe-acrobat-pro
-brew cask install adobe-acrobat-reader
+# brew cask install adobe-acrobat-pro
+# brew cask install adobe-acrobat-reader
+brew cask install adobe-creative-cloud
 brew cask install android-studio
 brew cask install arduino
 brew cask install atom
@@ -109,7 +110,7 @@ brew cask install font-waltograph
 
 #####
 echo "Performing Cleanup..."
-brew cleanup --force
+brew cleanup --prune=0 --force
 rm -rf /Library/Caches/Homebrew/*
 echo "Brew installs complete."
 
@@ -138,7 +139,7 @@ yes "" | sudo gem install rspec
 
 #####
 echo "Moving iTerm2 profile into place..."
-cp -iprv ./settings\ profiles/iterm_settings.json ~/Library/Application Support/iTerm2/DynamicProfiles/settings.json
+cp -iprv ./settings-profiles/iterm_settings.json ~/Library/Application\ Support/iTerm2/DynamicProfiles/settings.json
 
 #####
 echo "Moving custom destops into place..."

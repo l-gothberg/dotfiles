@@ -3,10 +3,11 @@
 # ======================================================================#
 alias reload='source ~/.bash_profile && clear && printf "Behold!  I Am Bob, the caveman who has harnessed the free exchange of electrons!\nHail, Tesla!\n\n"'
 
-alias c='clear; new_line=false'
+alias c=' clear; new_line=false'
+alias hs=' history'
 alias ls='ls -oaF'
-alias edit='subl'
-alias bp='subl ~/.bash_profile'
+alias edit='code'
+alias bp='code ~/'
 alias cleartrash='rm -rf ~/.Trash/*'
 alias copypath='pwd | pbcopy'
 alias sqlite='sqlite3'
@@ -21,7 +22,7 @@ alias mv='mv -iv'
 alias mkdir='mkdir -pv'
 alias cp='cp -ivpR'
 alias update='brew update && brew upgrade && brew cleanup --prune=0 && softwareupdate -iaR'
-function h { history | grep "$1"; }
+function h {  history | grep "$1"; }
 function mkcd { mkdir -p "$1" && cd "$1"; }			# Creates a folder and gets inside of it
 function trash { command mv "$@" ~/.Trash ; }		# Moves a file to the Mac OSX trash
 
@@ -40,4 +41,3 @@ alias rspec='clear && rspec'
 #	Git Commands														#
 # ======================================================================#
 function git-push { message=$@; git add -A && git commit -m "$message" && git push --all; }
-alias git-run='git add -A && git commit -am'

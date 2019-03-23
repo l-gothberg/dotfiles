@@ -130,7 +130,7 @@ yes "" | sudo gem install rspec
 
 #####
 echo "Moving iTerm2 profile into place..."
-cp -ipvR ./settings-profiles/iterm_settings.json ~/Library/Application\ Support/iTerm2/DynamicProfiles/settings.json
+cp -ipvR ./settings-profiles/iterm-settings.json ~/Library/Application\ Support/iTerm2/DynamicProfiles/settings.json
 
 #####
 echo "Moving custom destops into place..."

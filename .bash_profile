@@ -10,6 +10,7 @@
 # ======================================================================#
 export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 export EDITOR='code -w'
+export HOMEBREW_GITHUB_API_TOKEN=<your_key_here>
 
 source ~/.alias-list
 source ~/.custom-functions

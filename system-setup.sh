@@ -7,13 +7,13 @@ export PATH=/usr/local/bin:/usr/bin:/usr/bin/ruby:/bin:/usr/sbin:/sbin
 #####
 echo "Moving profiles into place..."
 cp -ipvR ./.config/ ~/.config/
-cp -ipvR ./.alias-list ~/.alias-list
-cp -ipvR ./.bash_profile ~/.bash_profile
-cp -ipvR ./.custom-functions ~/.custom-functions
-cp -ipvR ./.custom-prompt ~/.custom-prompt
-cp -ipvR ./.git-branch-info ~/.git-branch-info
+cp -ipvR ./.alias-list.sh ~/.alias-list
+cp -ipvR ./.bash_profile.sh ~/.bash_profile
+cp -ipvR ./.custom-functions.sh ~/.custom-functions
+cp -ipvR ./.custom-prompt.sh ~/.custom-prompt
+cp -ipvR ./.git-branch-info.sh ~/.git-branch-info
 cp -ipvR ./.gitignore ~/.gitignore
-cp -ipvR ./.inputrc ~/.inputrc
+cp -ipvR ./.inputrc.sh ~/.inputrc
 
 #####
 echo "Setting system defaults..."
@@ -113,9 +113,12 @@ cp -ipvR ./fonts/*.* ~/Library/Fonts/
 echo "Installing Node Packages..."
 npm install -g aws
 npm install -g aws-sdk
+npm install -g chai
+npm install -g cypress
 npm install -g firebase
 npm install -g firebase-tools
 npm install -g live-server
+npm install -g mocha
 npm install -g particle-cli
 npm install -g stream-http
 npm install -g typescript

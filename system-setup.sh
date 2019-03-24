@@ -117,6 +117,8 @@ npm install -g firebase
 npm install -g firebase-tools
 npm install -g live-server
 npm install -g particle-cli
+npm install -g stream-http
+npm install -g typescript
 npm install -g uuid
 npm install -g vue
 npm install -g @vue/cli

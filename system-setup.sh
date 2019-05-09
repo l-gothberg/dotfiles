@@ -74,6 +74,7 @@ brew cask install intellij-idea-ce
 brew cask install iterm2
 brew cask install istat-menus
 brew cask install java
+brew cask install journey
 brew cask install logitech-gaming-software
 brew cask install sketch
 brew cask install sketchup-pro

@@ -8,7 +8,7 @@
 # ======================================================================#
 #	Exports																#
 # ======================================================================#
-export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/leo/bin
 export EDITOR='code -w'
 export HOMEBREW_GITHUB_API_TOKEN=<your_key_here>
 

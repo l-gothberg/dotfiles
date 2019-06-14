@@ -47,6 +47,7 @@ brew install node
 brew install python
 brew install openssl
 brew install ruby
+brew install unrar
 brew install youtube-dl
 
 # Cask Applications

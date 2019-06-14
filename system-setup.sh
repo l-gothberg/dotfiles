@@ -44,6 +44,7 @@ brew install git
 brew install gnupg
 brew install mas
 brew install node
+brew install p7zip
 brew install python
 brew install openssl
 brew install ruby

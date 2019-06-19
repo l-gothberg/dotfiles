@@ -10,8 +10,7 @@ cp -ipvR ./.config/ ~/.config/
 cp -ipvR ./.alias-list.sh ~/.alias-list
 cp -ipvR ./.bash_profile.sh ~/.bash_profile
 cp -ipvR ./.custom-functions.sh ~/.custom-functions
-cp -ipvR ./.custom-prompt.sh ~/.custom-prompt
-cp -ipvR ./.git-branch-info.sh ~/.git-branch-info
+cp -ipvR ./.git-prompt.sh ~/.git-prompt
 cp -ipvR ./.gitignore ~/.gitignore
 cp -ipvR ./.inputrc.sh ~/.inputrc
 

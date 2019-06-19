@@ -8,15 +8,13 @@
 # ======================================================================#
 #	Exports																#
 # ======================================================================#
-export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/leo/bin
+export PATH=/usr/local/opt/sqlite/bin:/usr/local/bin:/usr/bin:/usr/bin/ruby:/bin:/usr/sbin:/sbin:/Users/leo/bin
 export EDITOR='code -w'
-export HOMEBREW_GITHUB_API_TOKEN=<your_key_here>
+export HOMEBREW_GITHUB_API_TOKEN='e252cdc44e8e96b040fa1e1a381b0357d5e0c0db'
 
 source ~/.alias-list
 source ~/.custom-functions
-source ~/.custom-prompt
-source ~/.git-branch-info
-
+source ~/.git-prompt
 
 # ======================================================================#
 #	Tab Completion														#
@@ -38,3 +36,7 @@ complete -W "NSGlobalDomain" defaults;
 
 # Add `killall` tab completion for common apps
 complete -o "nospace" -W "Contacts Calendar Dock Finder Mail Safari iTunes SystemUIServer Terminal Twitter" killall;
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/bin" ] ; then
+    PATH="$HOME/bin:$PATH"
+fi

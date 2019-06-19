@@ -16,7 +16,6 @@
 # Updates prompt colors for personal taste.
 # ======================================================================#
 
-# Normal Colors
 black="\e[/033\e[0;30m\]"
 white="\e[/033\e[0;00m\]"
 bold_white="\e[/033\e[1;00m\]"
@@ -97,18 +96,76 @@ git_prompt() {
     fi
 }
 
-# Sample prompt declaration based off of the default Ubuntu 14.04.1 color
-# prompt. Tweak as you see fit, or just stick "$(git_prompt)" into your
-# favorite prompt.
-PS1="$bold_cyan\u ~ \D{%F} \A\n$yellow\w$(git_prompt)$white $ $green"
+# Prompt declaration.
+# Tweak as you see fit, or just stick "$(git_prompt)" into your favorite prompt.
+# See list of prompt switches below.
 
-#-----
+PS1="$purple\u ~ \D{%F} \A\n$white$(git_prompt)\n$cyan\w $green$ $white"
 
-# ideas from http://pastie.org/pastes/165446
-# function parse_git_branch {
-#   git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
-# }
+# ======================================================================#
+# Prompt Information													#
+# ======================================================================#
+# \a = bell character
+# \d = date, in “Weekday Month Date” format (e.g., “Tue May 26”)
+# \D{} = date, in strftime(3) format (NOTE: braces are required, format may be specified, blank defaults to locale settings)
+# \e = escape character
+# \h = hostname, up to first '.'
+# \H = hostname, full
+# \j = number of jobs currently managed by shell
+# \l = basename of the shell’s terminal device name
+# \n = newline
+# \r = carriage return
+# \s = name of the shell, the basename of $0 (the portion following the final slash)
+# \t = time, in 24-hour HH:MM:SS format
+# \T = time, in 12-hour HH:MM:SS format
+# \@ = time, in 12-hour am/pm format
+# \A = time, in 24-hour HH:MM format
+# \u = username of the current user
+# \v = version of Bash (e.g., 2.00)
+# \V = release of Bash, version + patchlevel (e.g., 2.00.0)
+# \w = current working directory, with $HOME abbreviated with a tilde (uses the $PROMPT_DIRTRIM variable)
+# \W = basename of $PWD, with $HOME abbreviated with a tilde
+# \! = history number of this command
+# \# = command number of this command
+# \$ = if effective uid is 0, #, otherwise $
+# \nnn = character whose ASCII code is the octal value nnn
+# \\ = backslash
+# \[ = begins a sequence of non-printing characters (NOTE: This could be used to embed a terminal control sequence into the prompt.)
+# \] = ends a sequence of non-printing characters started by \[
 
-#PROMPT_COMMAND='DIR=`pwd|sed -e "s!$HOME!~!"`; if [ ${#DIR} -gt 20 ]; then CurDir=...${DIR:${#DIR}-12}; else CurDir=$DIR; fi'
-#PS1="[\$CurDir] \$ "
-#export PS1="\[\033[35m\]\w\[\033[31m\]\$(parse_git_branch)\[\033[00m\]$ "
+# ======================================================================#
+# LSCOLORS Information													#
+# ======================================================================#
+
+# The value of this variable describes what color to use for which attribute when colors are enabled with CLICOLOR.  This string is a concatenation of pairs of the format fb, where f is the foreground color and b is the background color.
+# The color designators are as follows:
+
+# a=black           A=bold black, usually shows up as dark grey
+# b=red             B=bold red
+# c=green           C=bold green
+# d=brown           D=bold brown, usually shows up as yellow
+# e=blue            E=bold blue
+# f=magenta         F=bold magenta
+# g=cyan            G=bold cyan
+# h=light grey      H=bold light grey; looks like bright white
+# x=default foreground or background
+
+# Note that the above are standard ANSI colors.  The actual display may differ depending on the color capabilities of the terminal in use.
+# The order of the attributes are as follows:
+
+#  1.   directory
+#  2.   symbolic link
+#  3.   socket
+#  4.   pipe
+#  5.   executable
+#  6.   block special
+#  7.   character special
+#  8.   executable with setuid bit set
+#  9.   executable with setgid bit set
+#  10.  directory writable to others, with sticky bit
+#  11.  directory writable to others, without sticky bit
+
+# The default is "exfxcxdxbxegedabagacad", i.e. blue foreground and default background for regular directories, black foreground and red background for setuid executables, etc.
+
+export CLICOLOR=1
+export LSCOLORS='exfxcxdxbxegedabagacad'

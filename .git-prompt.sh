@@ -16,9 +16,10 @@
 # Updates prompt colors for personal taste.
 # ======================================================================#
 
+reset_color="\e[/033\e[0;00m\]"
 black="\e[/033\e[0;30m\]"
-white="\e[/033\e[0;00m\]"
-bold_white="\e[/033\e[1;00m\]"
+white="\e[/033\e[0;37m\]"
+bold_white="\e[/033\e[1;37m\]"
 grey="\e[/033\e[2;37m\]"
 yellow="\e[/033\e[0;33m\]"
 bold_yellow="\e[/033\e[1;33m\]"
@@ -34,6 +35,7 @@ cyan="\e[/033\e[0;36m\]"
 bold_cyan="\e[/033\e[1;36m\]"
 purple="\e[/033\e[0;35m\]"
 bold_purple="\e[/033\e[1;35m\]"
+bold_underline_purple="\e[/033\e[1;4;35m\]"
 
 git_branch() {
     # -- Finds and outputs the current branch name by parsing the list of
@@ -100,7 +102,7 @@ git_prompt() {
 # Tweak as you see fit, or just stick "$(git_prompt)" into your favorite prompt.
 # See list of prompt switches below.
 
-PS1="$purple\u ~ \D{%F} \A\n$white$(git_prompt)\n$cyan\w $green$ $white"
+PS1="$bold_underline_purple\u ~ \D{%F} \A\nGit Branch$white$bold_purple:$reset_color$(git_prompt)\n$cyan\w $yellow$ $white"
 
 # ======================================================================#
 # Prompt Information													#

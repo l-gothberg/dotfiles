@@ -11,6 +11,31 @@
 #
 # License: MIT, unless the authors of those two gists object :)
 
+# ======================================================================#
+# Modified by Leo G., 2019 Jun 19
+# Updates prompt colors for personal taste.
+# ======================================================================#
+
+# Normal Colors
+black="\e[/033\e[0;30m\]"
+white="\e[/033\e[0;00m\]"
+bold_white="\e[/033\e[1;00m\]"
+grey="\e[/033\e[2;37m\]"
+yellow="\e[/033\e[0;33m\]"
+bold_yellow="\e[/033\e[1;33m\]"
+brown="\e[/033\e[0;2;33m\]"
+red="\e[/033\e[0;31m\]"
+bold_red="\e[/033\e[1;31m\]"
+dim_red="\e[/033\e[2;31m\]"
+blue="\e[/033\e[0;34m\]"
+bold_blue="\e[/033\e[1;34m\]"
+green="\e[/033\e[0;32m\]"
+bold_green="\e[/033\e[1;32m\]"
+cyan="\e[/033\e[0;36m\]"
+bold_cyan="\e[/033\e[1;36m\]"
+purple="\e[/033\e[0;35m\]"
+bold_purple="\e[/033\e[1;35m\]"
+
 git_branch() {
     # -- Finds and outputs the current branch name by parsing the list of
     #    all branches
@@ -49,11 +74,11 @@ git_color() {
     local staged=$([[ $1 =~ \+ ]] && echo yes)
     local dirty=$([[ $1 =~ [!\?] ]] && echo yes)
     if [[ -n $staged ]] && [[ -n $dirty ]]; then
-        echo -e '\033[33m'  # bold yellow
+        echo -e '\033[1;33m'  # bold yellow
     elif [[ -n $staged ]]; then
-        echo -e '\033[32m'  # bold green
+        echo -e '\033[1;32m'  # bold green
     elif [[ -n $dirty ]]; then
-        echo -e '\033[31m'  # bold red
+        echo -e '\033[1;31m'  # bold red
     else
         echo -e '\033[1;37m'  # bold white
     fi
@@ -71,10 +96,11 @@ git_prompt() {
         echo -e "\x01$color\x02[$branch$state]\x01\033[00m\x02"  # last bit resets color
     fi
 }
+
 # Sample prompt declaration based off of the default Ubuntu 14.04.1 color
 # prompt. Tweak as you see fit, or just stick "$(git_prompt)" into your
 # favorite prompt.
-PS1='\[\033[0;34m\]\w$(git_prompt)\[\033[00m\]\$ '
+PS1="$bold_cyan\u ~ \D{%F} \A\n$yellow\w$(git_prompt)$white $ $green"
 
 #-----
 

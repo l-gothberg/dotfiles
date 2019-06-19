@@ -10,7 +10,7 @@
 # ======================================================================#
 export PATH=/usr/local/opt/sqlite/bin:/usr/local/bin:/usr/bin:/usr/bin/ruby:/bin:/usr/sbin:/sbin:/Users/leo/bin
 export EDITOR='code -w'
-export HOMEBREW_GITHUB_API_TOKEN='e252cdc44e8e96b040fa1e1a381b0357d5e0c0db'
+export HOMEBREW_GITHUB_API_TOKEN='INSERT_TOKEN_HERE'
 
 source ~/.alias-list
 source ~/.custom-functions

@@ -7,10 +7,10 @@ export PATH=/usr/local/bin:/usr/bin:/usr/bin/ruby:/bin:/usr/sbin:/sbin
 #####
 echo "Moving profiles into place..."
 cp -ipvR ./.config/ ~/.config/
-cp -ipvR ./.alias-list.sh ~/.alias-list
+cp -ipvR ./.alias-list.sh ~/.alias-list.sh
 cp -ipvR ./.bash_profile.sh ~/.bash_profile
-cp -ipvR ./.custom-functions.sh ~/.custom-functions
-cp -ipvR ./.git-prompt.sh ~/.git-prompt
+cp -ipvR ./.custom-functions.sh ~/.custom-functions.sh
+cp -ipvR ./.git-prompt.sh ~/.git-prompt.sh
 cp -ipvR ./.gitignore ~/.gitignore
 cp -ipvR ./.inputrc.sh ~/.inputrc
 

@@ -1,8 +1,8 @@
 # ======================================================================#
-#	Author:			Leo Gothberg											#
+#	Author:			Leo Gothberg                                        #
 #	Company:															#
-#	Website:															#
-#	Description:	Bash Profile										#
+#	Website:		https://www.l-gothberg.com							#
+#	Description:    Bash Profile										 #
 # ======================================================================#
 
 # ======================================================================#
@@ -10,11 +10,12 @@
 # ======================================================================#
 export PATH=/usr/local/opt/sqlite/bin:/usr/local/bin:/usr/bin:/usr/bin/ruby:/bin:/usr/sbin:/sbin:/Users/leo/bin
 export EDITOR='code -w'
-export HOMEBREW_GITHUB_API_TOKEN='INSERT_TOKEN_FROM_1PASSWORD_HERE'
+export HOMEBREW_GITHUB_API_TOKEN='INSERT TOKEN HERE'
 
-source ~/.alias-list
-source ~/.custom-functions
-source ~/.git-prompt
+source ~/.alias-list.sh
+source ~/.custom-functions.sh
+source ~/.git-prompt.sh
+source ~/.custom-prompt.sh
 
 # ======================================================================#
 #	Tab Completion														#

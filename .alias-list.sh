@@ -3,8 +3,8 @@
 # ======================================================================#
 alias reload='source ~/.bash_profile && clear && printf "Behold!  I Am Bob, the caveman who has harnessed the free exchange of electrons!\nHail, Tesla!\n\n"'
 
-alias c=' clear; new_line=false'
-alias ch=' history -c'
+alias c=' clear'
+alias ch=' history -c && clear'
 alias hs=' history'
 alias ls='ls -oaF'
 alias edit='code'
@@ -25,6 +25,8 @@ alias cp='cp -ivpR'
 alias update='brew upgrade && brew cleanup --prune=0'
 alias os-update='softwareupdate -iaR'
 function h {  history | grep "$1"; }
+function mk7z { 7z a "$1" ./* -mx=9; }				# creates a 7z archive with maximum compression
+function ex7z { 7z e "$1"; }						# extracts specified 7z archive
 function mkcd { mkdir -p "$1" && cd "$1"; }			# Creates a folder and gets inside of it
 function trash { command mv "$@" ~/.Trash ; }		# Moves a file to the Mac OSX trash
 

@@ -23,7 +23,9 @@ alias mv='mv -iv'
 alias mkdir='mkdir -pv'
 alias cp='cp -ivpR'
 alias update='brew upgrade && brew cleanup --prune=0'
+alias cleanup='brew cleanup --prune=0'
 alias os-update='softwareupdate -iaR'
+alias pip='pip3'
 function h {  history | grep "$1"; }
 function mk7z { 7z a "$1" ./* -mx=9; }				# creates a 7z archive with maximum compression
 function ex7z { 7z e "$1"; }						# extracts specified 7z archive

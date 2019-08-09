@@ -55,15 +55,18 @@ brew cask install 1password
 # brew cask install adobe-acrobat-pro
 # brew cask install adobe-acrobat-reader
 brew cask install adobe-creative-cloud
+brew cask install alfred
 brew cask install android-studio
 brew cask install arduino
 # brew cask install atom
 brew cask install balenaetcher
+brew cask install brave-browser
 # brew cask install basecamp
 brew cask install canary
 # brew cask install coda
 brew cask install discord
-brew cask install eagle
+# brew cask install eagle
+brew cask install easyeda
 brew cask install firefox
 # brew cask install geekbench
 # brew cask install github
@@ -73,21 +76,24 @@ brew cask install google-chrome
 brew cask install gpg-suite
 brew cask install handbrake
 # brew cask install intellij-idea-ce
-brew cask install iterm2
 brew cask install istat-menus
+brew cask install iterm2
 brew cask install java
 brew cask install journey
+brew cask install kicad
 brew cask install logitech-gaming-software
+brew cask install pibakery
 brew cask install sketch
 # brew cask install sketchup-pro
 brew cask install slack
 brew cask install spotify
 brew cask install steam
-brew cask install sublime-text
+# brew cask install sublime-text
+brew cask install visual-studio
 brew cask install visual-studio-code
-brew cask install virtualbox
+# brew cask install virtualbox
 brew cask install vlc
-brew cask install wireshark
+# brew cask install wireshark
 
 # Fonts
 echo "Installing Fonts from Web..."

@@ -8,7 +8,7 @@
 # ======================================================================#
 #	Exports																#
 # ======================================================================#
-export PATH=/usr/local/opt/sqlite/bin:/usr/local/bin:/usr/bin:/usr/bin/ruby:/bin:/usr/sbin:/sbin:/Users/leo/bin
+export PATH=/Users/leo/bin:/usr/local/opt/sqlite/bin:/usr/local/bin:/usr/local/bin/python3:/usr/bin/ruby:/usr/bin:/bin:/usr/sbin:/sbin:/Users/leo/bin
 export EDITOR='code -w'
 export HOMEBREW_GITHUB_API_TOKEN='INSERT TOKEN HERE'
 

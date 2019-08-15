@@ -101,4 +101,4 @@ PROMPT_COMMAND='__git_ps1 "$bold_underline_purple\D{%F} \A\n\u @ \h\n$brown\w$re
 # The default is "exfxcxdxbxegedabagacad", i.e. blue foreground and default background for regular directories, black foreground and red background for setuid executables, etc.
 
 export CLICOLOR=1
-export LSCOLORS='exfxcxdxbxegedabagacad'
+export LSCOLORS='gxfxcxdxbxegedabagacad'

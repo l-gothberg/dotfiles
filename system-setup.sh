@@ -75,7 +75,7 @@ brew cask install google-backup-and-sync
 brew cask install google-chrome
 brew cask install gpg-suite
 brew cask install handbrake
-# brew cask install intellij-idea-ce
+# brew cask install intellij-idea
 brew cask install istat-menus
 brew cask install iterm2
 brew cask install java
@@ -163,16 +163,16 @@ echo "Installing App Store Applications"
 # ln -s ~/Library/Mobile\ Documents/com~apple~CloudDocs ~/usr/local/bin/iCloud\ Drive
 
 #####
-echo "Creating simlink for Sublme Text..."
-ln -s /Applications/Sublime Text.app/Contents/SharedSupport/bin/subl /usr/local/bin/subl
+# echo "Creating simlink for Sublme Text..."
+# ln -s /Applications/Sublime Text.app/Contents/SharedSupport/bin/subl /usr/local/bin/subl
 
 #####
-echo "Cloning Sublime Text Repository and moving items into place."
-cd ~/Library/Application\ Support/
-rm -rf Sublime\ Text\ 3/
-git clone git@github.com:l-gothberg/sublime-text-3.git
-mv sublime-text-3/ Sublime\ Text\ 3/
-cd
+# echo "Cloning Sublime Text Repository and moving items into place."
+# cd ~/Library/Application\ Support/
+# rm -rf Sublime\ Text\ 3/
+# git clone git@github.com:l-gothberg/sublime-text-3.git
+# mv sublime-text-3/ Sublime\ Text\ 3/
+# cd
 
 # Move the log of all setup into
 # mv setup-log.txt "setup-log - $(date +%Y_%m_%d__%H%M).txt"

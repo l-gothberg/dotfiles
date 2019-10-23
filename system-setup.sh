@@ -33,7 +33,7 @@ brew tap homebrew/cask-fonts
 brew tap caskroom/versions
 
 echo "Installing Applications..."
-brew install awscli
+# brew install awscli
 brew install autojump
 brew install bash-completion
 brew install dfu-util
@@ -152,7 +152,8 @@ cp -ipvR ./settings-profiles/iterm-settings.json ~/Library/Application\ Support/
 
 #####
 echo "Moving custom destops into place..."
-cp -ipvR ./desktops/* ~/Pictures/
+mkdir ~/Pictures/Desktops/
+cp -ipvR ./desktops/* ~/Pictures/Desktops/
 
 #####
 echo "Installing App Store Applications"

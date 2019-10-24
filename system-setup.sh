@@ -6,17 +6,19 @@ export PATH=/usr/local/bin:/usr/bin:/usr/bin/ruby:/bin:/usr/sbin:/sbin
 
 #####
 echo "Moving profiles into place..."
-cp -ipvR ./.config/ ~/.config/
 cp -ipvR ./.alias-list.sh ~/.alias-list.sh
-cp -ipvR ./.bash_profile.sh ~/.bash_profile
 cp -ipvR ./.custom-functions.sh ~/.custom-functions.sh
 cp -ipvR ./.git-prompt.sh ~/.git-prompt.sh
+cp -ipvR ./.custom-prompt.sh ~/.custom-prompt.sh
+cp -ipvR ./.bash_profile.sh ~/.bash_profile
+
+cp -ipvR ./.config/ ~/.config/
 cp -ipvR ./.gitignore ~/.gitignore
 cp -ipvR ./.inputrc.sh ~/.inputrc
 
 #####
 echo "Setting system defaults..."
-./set-system-defaults.sh
+# ./set-system-defaults.sh
 source ~/.bash_profile
 
 #####
@@ -67,6 +69,7 @@ brew cask install canary
 brew cask install discord
 # brew cask install eagle
 brew cask install easyeda
+# brew cask info elgato-stream-deck
 brew cask install firefox
 # brew cask install geekbench
 # brew cask install github
@@ -120,20 +123,20 @@ cp -ipvR ./fonts/*.* ~/Library/Fonts/
 
 #####
 echo "Installing Node Packages..."
-npm install -g aws
-npm install -g aws-sdk
-npm install -g chai
-npm install -g cypress
-npm install -g firebase
-npm install -g firebase-tools
+# npm install -g aws
+# npm install -g aws-sdk
+# npm install -g chai
+# npm install -g cypress
+# npm install -g firebase
+# npm install -g firebase-tools
 npm install -g live-server
-npm install -g mocha
+# npm install -g mocha
 # npm install -g particle-cli
-npm install -g stream-http
-npm install -g typescript
-npm install -g uuid
-npm install -g vue
-npm install -g @vue/cli
+# npm install -g stream-http
+# npm install -g typescript
+# npm install -g uuid
+# npm install -g vue
+# npm install -g @vue/cli
 
 #####
 echo "Installing Particle CLI"
@@ -141,10 +144,10 @@ curl -sL https://particle.io/install-cli
 
 #####
 echo "Installing Ruby Gems..."
-yes "" | sudo gem install bundler
-yes "" | sudo gem install sass
-yes "" | sudo gem install jekyll
-yes "" | sudo gem install rspec
+# yes "" | sudo gem install bundler
+# yes "" | sudo gem install sass
+# yes "" | sudo gem install jekyll
+# yes "" | sudo gem install rspec
 
 #####
 echo "Moving iTerm2 profile into place..."

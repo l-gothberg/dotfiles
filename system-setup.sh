@@ -11,6 +11,7 @@ cp -ipvR ./.custom-functions.sh ~/.custom-functions.sh
 cp -ipvR ./.git-prompt.sh ~/.git-prompt.sh
 cp -ipvR ./.custom-prompt.sh ~/.custom-prompt.sh
 cp -ipvR ./.bash_profile.sh ~/.bash_profile
+cp -ipvR ./.bash_profile.sh ~/.zshrc
 
 cp -ipvR ./.config/ ~/.config/
 cp -ipvR ./.gitignore ~/.gitignore
@@ -19,11 +20,16 @@ cp -ipvR ./.inputrc.sh ~/.inputrc
 #####
 echo "Setting system defaults..."
 # ./set-system-defaults.sh
-source ~/.bash_profile
+# source ~/.bash_profile
+source ~/.zshrc
 
 #####
 echo "Checking for Updates..."
 sudo softwareupdate -iaR
+
+#####
+echo "Installing Xcode Command Line Tools..."
+sudo xcode-select --install
 
 #####
 echo "Installing Homebrew..."

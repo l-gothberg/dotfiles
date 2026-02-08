@@ -1,16 +1,13 @@
-chezmoi:template:left-delimiter="# {{"
-# Last Update Information
-# {{ now.Format "2006-01-02" }}
+# ──────────────────────────────────────────────────────────────
+# Managed by chezmoi — do not edit ~/.zshrc directly
+# ──────────────────────────────────────────────────────────────
 
-# OS detection test 
 {{ if eq .chezmoi.os "darwin" -}}
 # macOS specific environment
 export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$HOME/bin:/usr/local/bin:$PATH"
-alias ls="gls -AFho --group-directories-first --color=auto"
 {{ else if eq .chezmoi.os "linux" -}}
 # Linux (Zorin OS / Ubuntu family) specific environment
 export PATH="$HOME/bin:/usr/local/bin:$PATH"
-alias ls="ls -AFho --group-directories-first --color=auto"
 {{ else -}}
 # Unknown OS - using safe defaults
 {{ end -}}
@@ -98,8 +95,13 @@ plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
 
-# User configuration
+# Enable colors
+# autoload -U colors && colors
 
+# Custom prompt inspired by Vira Graphite High Contrast theme (high contrast: blue for user, green for host, yellow for path, cyan for symbol)
+# PROMPT='%B%F{blue}%n%f@%F{green}%m%f %F{yellow}%~%f %F{cyan}$%f%b '
+
+# User configuration
 export MANPATH="$MANPATH:/usr/local/man"
 
 # You may need to manually set your language environment
@@ -126,59 +128,70 @@ export MANPATH="$MANPATH:/usr/local/man"
 
 # Common aliases
 alias edit="code"
-alias ls="gls -AFho --group-directories-first"
 alias reload="source ~/.zshrc && clear"
-alias update="sudo apt update -qq && sudo apt upgrade -y && sudo snap refresh"
 
 # OS-aware system aliases
 {{ if eq .chezmoi.os "darwin" }}
-alias update="brew update --quiet && brew upgrade && brew autoremove"
+    alias la="gls -A -F -h --group-directories-first --color=always --time-style=long-iso"
+    alias ll="gls -A -F -h -l --group-directories-first --color=always --time-style=long-iso"
+    alias lt="gls -A -F -h -l -t --group-directories-first --color=always --time-style=long-iso"
+    alias ltr="gls -A -F -h -l -t -r --group-directories-first --color=always --time-style=long-iso"
+    alias ld="gls -d .* -F -h --color=always --time-style=long-iso"
+    alias l1="gls -1 -A -F -h --group-directories-first --color=always --time-style=long-iso"
+    alias lx="gls -A -F -h -l -X --group-directories-first --color=always --time-style=long-iso"
+    alias lk="gls -A -F -h -l -S --group-directories-first --color=always --time-style=long-iso"
+    alias ca="chezmoi apply"
 {{ else if eq .chezmoi.os "linux" }}
-alias update="sudo apt update -qq && sudo apt full-upgrade -y && sudo apt autoremove -y"
+    alias la="ls -A -F -h --group-directories-first --color=always --time-style=long-iso"
+    alias ll="ls -A -F -h -l --group-directories-first --color=always --time-style=long-iso"
+    alias lt="ls -A -F -h -l -t --group-directories-first --color=always --time-style=long-iso"
+    alias ltr="ls -A -F -h -l -t -r --group-directories-first --color=always --time-style=long-iso"
+    alias ld="ls -d .* -F -h --color=always --time-style=long-iso"
+    alias l1="ls -1 -A -F -h --group-directories-first --color=always --time-style=long-iso"
+    alias lx="ls -A -F -h -l -X --group-directories-first --color=always --time-style=long-iso"
+    alias lk="ls -A -F -h -l -S --group-directories-first --color=always --time-style=long-iso"
+    alias ca="chezmoi apply"
+{{ else }}
+    alias update="echo "Update not supported on this OS""
+    alias la="ls -A -F -h --group-directories-first"
+    alias ll="ls -A -F -h -l --group-directories-first"
+    alias lt="ls -A -F -h -l -t --group-directories-first"
+    alias ltr="ls -A -F -h -l -t -r --group-directories-first"
+    alias ld="ls -d .* -F -h"
+    alias l1="ls -1 -A -F -h --group-directories-first"
+    alias lx="ls -A -F -h -l -X --group-directories-first"
+    alias lk="ls -A -F -h -l -S --group-directories-first"
+    alias ca="chezmoi apply"
 {{ end }}
 
-# Installs one or more user specified packages via 'sudo apt install [package(s)] -y'
-# User authenication is required.
-# Provides user feedback during install processes and aborts if errors are encountered.
+# OS-aware functions
+# Install function for apt and brew packages
 install() {
-    [ $# -eq 0 ] && {
-        echo "Error: No package(s) specified."
-        echo "Usage: install package1 [package2 ...]"
-        return 1
-    }
-
-    echo "Updating package lists... "
-    sudo apt update -y -qq >/dev/null 2>&1 || {
-        echo "Failed to update package lists."
-        echo "Aborting install."
-        return 1
-    }
-    echo "Done."
-
-    echo "Installing: $@"
-    sudo apt install "$@" -y
-}
-
-# Uninstalls and purges one or more user specified packages via 'sudo apt purge [package(s)] -y'
-# Also removes all packages which are no longer required via 'sudo apt autoremove --purge'
-# User authenication is required.
-# Provides user feedback during purge processes and aborts if errors are encountered.
-uninstall() {
     if [ $# -eq 0 ]; then
-        echo "Error: No package(s) specified."
-        echo "Usage: uninstall package1 [package2 ...]"
+        echo "Usage: install <package> [package...]"
         return 1
     fi
+{{ if eq .chezmoi.os "darwin" }}
+    brew install "$@"
+{{ else if eq .chezmoi.os "linux" }}
+    sudo apt update -qq
+    sudo apt install -y "$@"
+{{ end }}
+}
 
-    echo "Purging: $@"
-    sudo apt purge "$@" -y || {
-        echo "Purge failed."
-        echo "Aborting autoremove step."
+# Uninstall function for apt and brew packages (with similar branching)
+uninstall() {
+    if [ $# -eq 0 ]; then
+        echo "Usage: uninstall <package> [package...]"
         return 1
-    }
-
-    echo "Cleaning up unused dependencies ..."
-    sudo apt autoremove -y --purge
+    fi
+{{ if eq .chezmoi.os "darwin" }}
+    brew uninstall "$@"
+    brew autoremove
+{{ else if eq .chezmoi.os "linux" }}
+    sudo apt purge -y "$@"
+    sudo apt autoremove -y
+{{ end }}
 }
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.

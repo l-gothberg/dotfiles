@@ -1,6 +1,3 @@
-# Optional taps if needed (e.g., for fonts)
-tap "homebrew/cask-fonts"
-
 # Formulae (CLI tools)
 brew "ca-certificates"
 brew "coreutils"
@@ -19,6 +16,7 @@ brew "pinentry-mac"
 brew "python"
 brew "qrencode"
 brew "readline"
+brew "starship"
 brew "sqlite"
 brew "trash"
 brew "unar"
@@ -36,6 +34,7 @@ cask "firefox"
 cask "folding-at-home"
 cask "folx"
 cask "font-jetbrains-mono-nerd-font"
+cask "ghostty"
 cask "gitkraken"
 cask "gpg-suite"
 cask "iina"

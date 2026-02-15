@@ -1,12 +1,105 @@
-"$schema" = 'https://starship.rs/config-schema.json'
-
 format = """
-[
-	\udb83\udf63
-]
+[](#673AB7)\
+$os\
+$username\
+[](bg:#E91E63 fg:#673AB7)\
+$directory\
+[](fg:#E91E63 bg:#FF9800)\
+$git_branch\
+$git_status\
+[](fg:#FF9800 bg:#03A9F4)\
+$c\
+$elixir\
+$elm\
+$golang\
+$gradle\
+$haskell\
+$java\
+$julia\
+$nodejs\
+$nim\
+$rust\
+$scala\
+[](fg:#03A9F4 bg:#009688)\
+$docker_context\
+[](fg:#009688 bg:#3F51B5)\
+$time\
+[ ](fg:#3F51B5)\
+"""
+
+add_newline = false
+
+[username]
+show_always = true
+style_user = "bg:#673AB7"
+style_root = "bg:#673AB7"
+format = '[$user ]($style)'
+disabled = false
+
+[os]
+style = "bg:#673AB7"
+disabled = true  # Enable if you prefer OS icon over username
+
+[directory]
+style = "bg:#E91E63"
+format = "[ $path ]($style)"
+truncation_length = 3
+truncation_symbol = "…/"
+
+[directory.substitutions]
+"Documents" = "󰈙 "
+"Downloads" = " "
+"Music" = " "
+"Pictures" = " "
+
+# Language modules (all use the same vibrant blue segment)
+[c]
+symbol = " "
+style = "bg:#03A9F4"
+format = '[ $symbol ($version) ]($style)'
+
+# ... (repeat for cpp, elixir, elm, golang, gradle, haskell, java, julia, nodejs, nim, rust, scala with the same style = "bg:#03A9F4")
 
 [git_branch]
-symbol = '🌱 '
-truncation_length = 4
-truncation_symbol = ''
-ignore_branches = ['master', 'main']
+symbol = " "
+style = "bg:#FF9800"
+format = '[ $symbol $branch ]($style)'
+
+[git_status]
+style = "bg:#FF9800"
+format = '[$all_status$ahead_behind ]($style)'
+
+[docker_context]
+symbol = " "
+style = "bg:#009688"
+format = '[ $symbol $context ]($style)'
+
+[time]
+disabled = false
+time_format = "%R"  # 24-hour time
+style = "bg:#3F51B5"
+format = '[ ♥ $time ]($style)'
+
+[palettes.material_design_colors]
+background = "#1d262a"
+foreground = "#e7ebed"
+cursor-color = "#eaeaea"
+cursor-text = "#000000"
+selection-foreground = "#4e6a78"
+selection-background = "#e7ebed"
+black = "#435b67" 			# ansi 0
+red = "#fc3841"				# ansi 1
+green = "#3add5d"			# ansi 2
+yellow = "#fed032"			# ansi 3
+blue = "#37b6ff"			# ansi 4
+magenta = "#fc226e"			# ansi 5
+cyan = "#59ffd1"			# ansi 6
+white = "#cccccc"			# ansi 7
+bright_black = "#a1b0b8"	# ansi 8
+bright_red = "#fc746d"		# ansi 9
+bright_green = "#51ff71"	# ansi 10
+bright_yellow = "#fee16c"	# ansi 11
+bright_blue = "#70cfff"		# ansi 12
+bright_magenta = "#fc669b"	# ansi 13
+bright_cyan = "#9affe6"		# ansi 14
+bright_white = "#FFFFFF"	# ansi 15

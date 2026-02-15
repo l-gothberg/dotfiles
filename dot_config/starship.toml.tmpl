@@ -1,0 +1,95 @@
+format = """
+[](bg:sky)\
+$os\
+$username\
+[](bg:#E91E63 fg:#673AB7)\
+$directory\
+[](fg:#E91E63 bg:#FF9800)\
+$git_branch\
+$git_status\
+[](fg:#FF9800 bg:#03A9F4)\
+$c\
+$elixir\
+$elm\
+$golang\
+$gradle\
+$haskell\
+$java\
+$julia\
+$nodejs\
+$nim\
+$rust\
+$scala\
+[](fg:#03A9F4 bg:#009688)\
+$docker_context\
+[](fg:#009688 bg:#3F51B5)\
+$time\
+[ ](fg:#3F51B5)\
+"""
+
+add_newline = true
+
+[username]
+show_always = true
+style_user = "bg:#673AB7"
+style_root = "bg:#673AB7"
+format = '[$user ]($style)'
+disabled = false
+
+[os]
+style = "bg:sky"
+disabled = true  # Enable if you prefer OS icon over username
+
+[directory]
+style = "bg:#E91E63"
+format = "[ $path ]($style)"
+truncation_length = 3
+truncation_symbol = "…/"
+
+[directory.substitutions]
+"Documents" = "󰈙 "
+"Downloads" = " "
+"Music" = " "
+"Pictures" = " "
+
+# Language modules (all use the same vibrant blue segment)
+[c]
+symbol = " "
+style = "bg:#03A9F4"
+format = '[ $symbol ($version) ]($style)'
+
+# ... (repeat for cpp, elixir, elm, golang, gradle, haskell, java, julia, nodejs, nim, rust, scala with the same style = "bg:#03A9F4")
+
+[git_branch]
+symbol = " "
+style = "bg:#FF9800"
+format = '[ $symbol $branch ]($style)'
+
+[git_status]
+style = "bg:#FF9800"
+format = '[$all_status$ahead_behind ]($style)'
+
+[docker_context]
+symbol = " "
+style = "bg:#009688"
+format = '[ $symbol $context ]($style)'
+
+[time]
+disabled = false
+time_format = "%R"  # 24-hour time
+style = "bg:#3F51B5"
+format = '[ ♥ $time ]($style)'
+
+[palettes.material_design_colors]
+background = "#343434"
+foreground = "#ffffff"
+cursor-color = "#eaeaea"
+cursor-text = "#000000"
+concrete = "#435b67"
+tomato = "#fc3841"
+lime = "#3add5d"
+lemon = "#fed032"
+sky = "#37b6ff"
+berry = "#fc226e"
+mint = "#59ffd1"
+white = "#ffffff"

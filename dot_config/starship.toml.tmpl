@@ -1,15 +1,38 @@
 palette = "material_design_colors"
 
+# format = """
+# [](fg:sky)\
+# [](fg:sky bg:lemon)\
+# $git_branch\
+# $git_status\
+# [](fg:lemon bg:#03A9F4)\
+# $c\
+# $elixir\
+# $elm\
+# $golang\
+# $gradle\
+# $haskell\
+# $java\
+# $julia\
+# $nodejs\
+# $nim\
+# $rust\
+# $scala\
+# [](fg:#03A9F4 bg:#009688)\
+# $docker_context\
+# [](fg:#009688 bg:mint)\
+# $time\
+# [ ](fg:mint)\
+# $line_break\
+# $directory$character\
+# """
+
 format = """
-[](bg:sky)\
-$os\
 $username\
-[](bg:#E91E63 fg:#673AB7)\
-$directory\
-[](fg:#E91E63 bg:#FF9800)\
+[](fg:sky bg:lemon)\
 $git_branch\
 $git_status\
-[](fg:#FF9800 bg:#03A9F4)\
+[](fg:lemon bg:#03A9F4)\
 $c\
 $elixir\
 $elm\
@@ -24,26 +47,37 @@ $rust\
 $scala\
 [](fg:#03A9F4 bg:#009688)\
 $docker_context\
-[](fg:#009688 bg:#3F51B5)\
+[](fg:#009688 bg:mint)\
 $time\
-[ ](fg:#3F51B5)\
+[ ](fg:mint)\
+$line_break\
+$directory\
+$character\
 """
 
-add_newline = true
+right_format = """
+$cmd_duration\
+"""
 
 [username]
 show_always = true
-style_user = "bg:#673AB7"
-style_root = "bg:#673AB7"
+style_user = "bg:sky fg:white"
+style_root = "bg:red fg:lemon"
 format = '[$user ]($style)'
 disabled = false
+
+[hostname]
+# style_user = "bg:sky fg:white"
+# style_root = "bg:red fg:lemon"
+# ssh_symbol = " "
+# format = '[$ssh_symbol]\@[hostname] '
 
 [os]
 style = "bg:sky"
 disabled = true  # Enable if you prefer OS icon over username
 
 [directory]
-style = "bg:#E91E63"
+style = ""
 format = "[ $path ]($style)"
 truncation_length = 3
 truncation_symbol = "…/"
@@ -57,18 +91,32 @@ truncation_symbol = "…/"
 # Language modules (all use the same vibrant blue segment)
 [c]
 symbol = " "
-style = "bg:#03A9F4"
-format = '[ $symbol ($version) ]($style)'
+style = "bg:sky"
+format = '[$symbol ($version) ]($style)'
 
 # ... (repeat for cpp, elixir, elm, golang, gradle, haskell, java, julia, nodejs, nim, rust, scala with the same style = "bg:#03A9F4")
 
 [git_branch]
-symbol = " "
-style = "bg:#FF9800"
-format = '[ $symbol $branch ]($style)'
+symbol = ""
+style = "bg:lemon"
+format = '[$symbol $branch ]($style)'
 
 [git_status]
-style = "bg:#FF9800"
+style = "bg:lemon"
+# local status
+conflicted = "[](bg:lemon fg:bold red)"
+untracked  = "[?](bg:lemon fg:bold red)"
+modified   = "[*](bg:lemon fg:bold red)"
+staged     = "[+](bg:lemon fg:lime)"
+renamed    = "[»](bg:lemon fg:lime)"
+deleted    = "[✕](bg:lemon fg:bold red)"
+# remote sync
+ahead      = "[⇡${count}](bold orange)"
+behind     = "[⇣${count}](bold orange)"
+diverged   = "[⇕⇡$${ahead_count}⇣$${behind_count}](bold orange)"
+# others
+stashed    = "[≡](bold white)"
+# format
 format = '[$all_status$ahead_behind ]($style)'
 
 [docker_context]
@@ -79,14 +127,40 @@ format = '[ $symbol $context ]($style)'
 [time]
 disabled = false
 time_format = "%R"  # 24-hour time
-style = "bg:#3F51B5"
-format = '[ ♥ $time ]($style)'
+style = "bg:mint fg:concrete"
+format = '[ $time ]($style)'
+
+[cmd_duration]
+style = ""
+show_milliseconds = true
+min_time = 10
+format = '[$duration]($style)'
 
 [palettes.material_design_colors]
-background = "#343434"
-foreground = "#ffffff"
-cursor-color = "#eaeaea"
-cursor-text = "#000000"
+background = "#263238"
+foreground = "#eceff1"
+selection-text = "#eceff1"
+selection-background = "#607d8b"
+
+black = "#546e7a"
+red = "#ff5252"
+green = "#5cf19e"
+yellow = "#ffd740"
+blue = "#40c4ff"
+magenta = "#ff4081"
+cyan = "#64fcda"
+white = "#ffffff"
+bright-black = "#b0bec5"
+bright-red = "#ff8a80"
+bright-green = "#b9f6ca"
+bright-yellow = "#ffe57f"
+bright-blue = "#80d8ff"
+bright-magenta = "#ff808b"
+bright-cyan = "#a7fdeb"
+bright-white = "#ffffff"
+
+cursor-color = "#eceff1"
+cursor-text = "#263238"
 concrete = "#435b67"
 tomato = "#fc3841"
 lime = "#3add5d"
@@ -94,4 +168,3 @@ lemon = "#fed032"
 sky = "#37b6ff"
 berry = "#fc226e"
 mint = "#59ffd1"
-white = "#ffffff"

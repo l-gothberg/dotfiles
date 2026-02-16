@@ -27,6 +27,7 @@ brew "sqlite"
 brew "starship"                # prompt
 brew "trash"                   # safer rm
 brew "unar"
+brew "wondershare-uniconverter"
 brew "xz"
 brew "yq"                      # YAML processor
 brew "zsh"

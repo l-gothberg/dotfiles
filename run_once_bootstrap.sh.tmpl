@@ -10,7 +10,8 @@ trap 'echo "Error occurred. Log saved at $LOG_FILE"; exit 1' ERR
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
 
 if [ "$OS" = "darwin" ]; then
-    # macOS: Ensure Homebrew in PATH (Apple Silicon or Intel)
+    # macOS section 
+    # Ensure Homebrew in PATH (Apple Silicon or Intel)
     if [ -x /opt/homebrew/bin/brew ]; then
         eval "$(/opt/homebrew/bin/brew shellenv)"
     elif [ -x /usr/local/bin/brew ]; then
@@ -33,25 +34,6 @@ if [ "$OS" = "darwin" ]; then
     echo "Installing packages from Brewfile..."
     brew bundle install --file=Brewfile
 
-    if [ ! -d "$HOME/.oh-my-zsh" ]; then
-        echo "Installing Oh My Zsh..."
-        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" --unattended
-    fi
-
-    # Plugins & theme
-    ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
-    if [ ! -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]; then
-        git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
-    fi
-
-    if [ ! -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]; then
-        git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
-    fi
-    
-    if [ ! -d "$ZSH_CUSTOM/themes/powerlevel10k" ]; then
-        git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
-    fi
-
     ZSH_PATH="$(brew --prefix zsh)/bin/zsh"
     if ! grep -q "^$ZSH_PATH$" /etc/shells; then
         echo "Adding $ZSH_PATH to /etc/shells..."
@@ -64,8 +46,10 @@ if [ "$OS" = "darwin" ]; then
     fi
 
 elif [ "$OS" = "linux" ]; then
+    # ubuntu/debian linux section
     sudo apt update -y
     sudo apt full-upgrade -y
+    sudo apt install -y software-properties-common fontconfig
 
     if [ -f "packages-linux.txt" ]; then
         echo "Installing simple packages..."
@@ -74,16 +58,95 @@ elif [ "$OS" = "linux" ]; then
         echo "packages-linux.txt not found. Skipping simple installs."
     fi
 
+    # Add repos and install new CLI tools (bat, ripgrep, etc.)
+    echo "Installing additional CLI tools..."
+    sudo apt install -y bat ripgrep fd-find fzf jq zoxide zsh-autosuggestions zsh-syntax-highlighting
+
+    # eza (add repo for latest, even if in universe)
+    if ! command -v eza &> /dev/null; then
+        echo "Adding eza repo and installing..."
+        sudo apt install -y gpg
+        sudo mkdir -p /etc/apt/keyrings
+        wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
+        echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | sudo tee /etc/apt/sources.list.d/gierens.list
+        sudo chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
+        sudo apt update -y
+        sudo apt install -y eza
+    fi
+
+    # gh (GitHub CLI)
+    if ! command -v gh &> /dev/null; then
+        echo "Adding gh repo and installing..."
+        (type -p wget >/dev/null || (sudo apt update && sudo apt install wget -y)) \
+        && sudo mkdir -p -m 755 /etc/apt/keyrings \
+        && wget -qO- https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \
+        && sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
+        && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+        && sudo apt update -y \
+        && sudo apt install -y gh
+    fi
+
+    # mise (version manager)
+    if ! command -v mise &> /dev/null; then
+        echo "Installing mise..."
+        sudo apt install -y curl
+        sudo install -dm 755 /etc/apt/keyrings
+        curl -fSs https://mise.jdx.dev/gpg-key.pub | sudo tee /etc/apt/keyrings/mise-archive-keyring.gpg >/dev/null
+        if lsb_release -rs | grep -qE '^26\.'; then
+            sudo add-apt-repository -y ppa:jdxcode/mise || true
+        else
+            echo "deb [signed-by=/etc/apt/keyrings/mise-archive-keyring.gpg arch=amd64] https://mise.jdx.dev/deb stable main" | sudo tee /etc/apt/sources.list.d/mise.list
+        fi
+        sudo apt update -y
+        sudo apt install -y mise
+    fi
+
+    # yq (YAML processor)
+    if ! command -v yq &> /dev/null; then
+        echo "Installing yq..."
+        sudo apt install -y yq
+    fi
+
+    # Starship prompt
+    if ! command -v starship &> /dev/null; then
+        echo "Installing Starship..."
+        curl -sS https://starship.rs/install.sh | sh -s -- -y
+    fi
+
+    # zsh-autocomplete (no apt package, git clone)
+    if [ ! -d "/usr/share/zsh-autocomplete" ]; then
+        echo "Installing zsh-autocomplete..."
+        sudo git clone https://github.com/marlonrichert/zsh-autocomplete.git /usr/share/zsh-autocomplete
+    fi
+
+    # Nerd Fonts (manual download for Linux)
+    echo "Installing Nerd Fonts..."
+    mkdir -p ~/.fonts
+    cd ~/.fonts
+    for font in FiraCode Hack JetBrainsMono; do
+        if [ ! -d "$font" ]; then
+            LATEST_VERSION=$(curl -s https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
+            wget https://github.com/ryanoasis/nerd-fonts/releases/download/v${LATEST_VERSION}/$font.zip
+            unzip $font.zip -d $font
+            rm $font.zip
+        fi
+    done
+    fc-cache -fv
+    cd -
+
+    # VS Code (updated to .sources format)
     if ! command -v code &> /dev/null; then
         echo "Installing VS Code..."
-        wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-        sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
-        sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
-        rm -f packages.microsoft.gpg
+        sudo apt-get install -y wget gpg apt-transport-https
+        wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+        sudo install -D -o root -g root -m 644 microsoft.gpg /usr/share/keyrings/microsoft.gpg
+        rm -f microsoft.gpg
+        echo "Types: deb\nURIs: https://packages.microsoft.com/repos/code\nSuites: stable\nComponents: main\nArchitectures: amd64,arm64,armhf\nSigned-By: /usr/share/keyrings/microsoft.gpg" | sudo tee /etc/apt/sources.list.d/vscode.sources
         sudo apt update -y
         sudo apt install -y code
     fi
 
+    # Discord
     if ! command -v discord &> /dev/null; then
         echo "Installing Discord..."
         wget -O discord.deb "https://discord.com/api/download?platform=linux&format=deb"
@@ -91,6 +154,7 @@ elif [ "$OS" = "linux" ]; then
         rm discord.deb
     fi
 
+    # 1Password
     if ! dpkg -s 1password &> /dev/null; then
         echo "Installing 1Password..."
         curl -sS https://downloads.1password.com/linux/keys/1password.asc | sudo gpg --dearmor --output /usr/share/keyrings/1password-archive-keyring.gpg
@@ -102,25 +166,6 @@ elif [ "$OS" = "linux" ]; then
         curl -sS https://downloads.1password.com/linux/keys/1password.asc | sudo gpg --dearmor --output /usr/share/debsig/keyrings/AC2D62742012EA22/debsig.gpg
         sudo apt update -y
         sudo apt install -y 1password
-    fi
-
-    if [ ! -d "$HOME/.oh-my-zsh" ]; then
-        echo "Installing Oh My Zsh..."
-        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" --unattended
-    fi
-
-    # Plugins & theme
-    ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
-    if [ ! -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]; then
-        git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
-    fi
-    
-    if [ ! -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]; then
-        git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
-    fi
-    
-    if [ ! -d "$ZSH_CUSTOM/themes/powerlevel10k" ]; then
-        git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
     fi
 
     ZSH_PATH="$(which zsh)"

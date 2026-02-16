@@ -1,4 +1,5 @@
 curl
+fontconfig
 gdebi-core
 git
 python3

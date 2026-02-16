@@ -1,3 +1,31 @@
+# ┌──────────────────────────────────────────────────────────────┐
+# │           SSH client configuration — managed by chezmoi      │
+# └──────────────────────────────────────────────────────────────┘
+
+# Global defaults that are safe everywhere
+Host *
+    ServerAliveInterval 60
+    ServerAliveCountMax 3
+    # ForwardAgent yes                  # ← only enable when really needed
+    IdentitiesOnly yes
+    AddKeysToAgent yes
+
+# macOS-specific keychain integration
+{{ if eq .chezmoi.os "darwin" }}
+  IgnoreUnknown UseKeychain
+  UseKeychain yes
+{{ end }}
+
+# ─── GitHub ──────────────────────────────────────────────────────
+
 Host github-personal
-  IdentityFile ~/.ssh/id_ed25519
-  IdentitiesOnly yes   
+    Hostname github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519
+    # IdentitiesOnly yes               # already set globally
+
+# Future / work account example (uncomment & adjust when needed)
+# Host github-work
+#     Hostname github.com
+#     User git
+#     IdentityFile ~/.ssh/id_ed25519_work

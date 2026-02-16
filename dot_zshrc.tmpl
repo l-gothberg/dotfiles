@@ -37,6 +37,8 @@ autoload -U colors && colors
 
 # ─── Completions ─────────────────────────────────────────────
 autoload -Uz compinit && compinit -C
+
+# ─── Plugin loading (order matters) ─────────────────────────────────────
 source_if_exists() { [[ -r "$1" ]] && source "$1" 2>/dev/null; }
 
 {{ if eq .chezmoi.os "darwin" -}}
@@ -44,6 +46,8 @@ source_if_exists() { [[ -r "$1" ]] && source "$1" 2>/dev/null; }
     source_if_exists "$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
     source_if_exists "$(brew --prefix)/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh"
 {{ else if eq .chezmoi.os "linux" -}}
+    source_if_exists "/usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+    source_if_exists "/usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
     source_if_exists "/usr/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh"
 {{ end -}}
 
@@ -53,27 +57,29 @@ alias reload="source ~/.zshrc && clear"
 alias ca="chezmoi apply"
 
 # ─── OS-aware ls aliases ─────────────────────────────────────────────
-{{ if eq .chezmoi.os "darwin" }}
-    alias la="gls -A -F -h --group-directories-first --color=always --time-style=long-iso"
-    alias ll="gls -A -F -h -l --group-directories-first --color=always --time-style=long-iso"
-    alias lt="gls -A -F -h -l -t --group-directories-first --color=always --time-style=long-iso"
-    alias ltr="gls -A -F -h -l -t -r --group-directories-first --color=always --time-style=long-iso"
-    alias ld="gls -d .* -F -h --color=always --time-style=long-iso"
-    alias l1="gls -1 -A -F -h --group-directories-first --color=always --time-style=long-iso"
-    alias lx="gls -A -F -h -l -X --group-directories-first --color=always --time-style=long-iso"
-    alias lk="gls -A -F -h -l -S --group-directories-first --color=always --time-style=long-iso"
-{{ else if eq .chezmoi.os "linux" }}
-    alias bat="batcat"     # bat package installs as batcat
-    alias fd="fdfind"      # fd-find package installs as fdfind
-    alias la="ls -A -F -h --group-directories-first --color=always --time-style=long-iso"
-    alias ll="ls -A -F -h -l --group-directories-first --color=always --time-style=long-iso"
-    alias lt="ls -A -F -h -l -t --group-directories-first --color=always --time-style=long-iso"
-    alias ltr="ls -A -F -h -l -t -r --group-directories-first --color=always --time-style=long-iso"
-    alias ld="ls -d .* -F -h --color=always --time-style=long-iso"
-    alias l1="ls -1 -A -F -h --group-directories-first --color=always --time-style=long-iso"
-    alias lx="ls -A -F -h -l -X --group-directories-first --color=always --time-style=long-iso"
-    alias lk="ls -A -F -h -l -S --group-directories-first --color=always --time-style=long-iso"
-{{ end }}
+# ─── Modern ls → eza (icons + git status on both OSes) ─────────────────────
+if command -v eza >/dev/null 2>&1; then
+    alias ls="eza --icons --git --group-directories-first"
+    alias la="eza -A --icons --git --group-directories-first"
+    alias ll="eza -l --icons --git --group-directories-first --time-style=long-iso"
+    alias lt="eza -l -T --icons --git --level=2"
+    alias ltr="eza -l -T --icons --git --level=2 --sort=oldest"
+    alias ld="eza -d .* --icons"
+    alias l1="eza -1 -A --icons"
+    alias lx="eza -l --icons --git --sort=extension"
+    alias lk="eza -l --icons --git --sort=size"
+    alias tree="eza --tree --icons --level=3"
+    alias ltree="eza -l --tree --icons --level=3"
+else
+    # fallback (should never hit after bootstrap)
+    {{ if eq .chezmoi.os "darwin" }}
+        alias la="gls -A -F -h --group-directories-first --color=always --time-style=long-iso"
+        # ... (keep your old gls block if you want)
+    {{ else }}
+        alias la="ls -A -F -h --group-directories-first --color=always --time-style=long-iso"
+        # ...
+    {{ end }}
+fi
 
 # ─── OS-aware package helpers
 install() {

@@ -67,17 +67,17 @@ if [ ! -d "$BOOTSTRAP_VOLUME" ]; then
 fi
 
 # Define expected key paths
-GMAIL_PRIV="$BOOTSTRAP_VOLUME/gmail"
-GMAIL_PUB="$BOOTSTRAP_VOLUME/gmail.pub"
-STARTMAIL_PRIV="$BOOTSTRAP_VOLUME/startmail"
-STARTMAIL_PUB="$BOOTSTRAP_VOLUME/startmail.pub"
+GMAIL_PRIV="$BOOTSTRAP_VOLUME/.gmail"
+GMAIL_PUB="$BOOTSTRAP_VOLUME/.gmail.pub"
+STARTMAIL_PRIV="$BOOTSTRAP_VOLUME/.startmail"
+STARTMAIL_PUB="$BOOTSTRAP_VOLUME/.startmail.pub"
 
 missing=()
 
-[ -f "$GMAIL_PRIV" ]     || missing+=("gmail")
-[ -f "$GMAIL_PUB" ]      || missing+=("gmail.pub")
-[ -f "$STARTMAIL_PRIV" ] || missing+=("startmail")
-[ -f "$STARTMAIL_PUB" ]  || missing+=("startmail.pub")
+[ -f "$GMAIL_PRIV" ]     || missing+=(".gmail")
+[ -f "$GMAIL_PUB" ]      || missing+=(".gmail.pub")
+[ -f "$STARTMAIL_PRIV" ] || missing+=(".startmail")
+[ -f "$STARTMAIL_PUB" ]  || missing+=(".startmail.pub")
 
 if [ ${#missing[@]} -gt 0 ]; then
     log "Missing SSH key files on $BOOTSTRAP_VOLUME:"
@@ -109,8 +109,8 @@ copy_ssh_key() {
     success "Copied and secured SSH key: $dst_name"
 }
 
-copy_ssh_key "gmail"    "id_ed25519"
-copy_ssh_key "startmail" "startmail"
+copy_ssh_key ".gmail"    "id_ed25519"
+copy_ssh_key ".startmail" "startmail"
 
 chown -R "$(whoami)":staff "$SSH_DIR"
 

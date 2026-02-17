@@ -37,6 +37,7 @@ autoload -U colors && colors
 
 # ─── Completions ─────────────────────────────────────────────
 autoload -Uz compinit && compinit -C
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 
 # ─── Plugin loading (order matters) ─────────────────────────────────────
 source_if_exists() { [[ -r "$1" ]] && source "$1" 2>/dev/null; }
@@ -55,6 +56,109 @@ source_if_exists() { [[ -r "$1" ]] && source "$1" 2>/dev/null; }
 alias edit="code"
 alias reload="source ~/.zshrc && clear"
 alias ca="chezmoi apply"
+
+# ─── Navigation & Directory Shortcuts ─────────────────────────────────────────
+# Quick parent/up movement
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+
+# Quick home & common locations (customize paths as needed)
+alias ~='cd ~'
+alias dl='cd ~/Downloads'
+alias doc='cd ~/Documents'
+alias desk='cd ~/Desktop'
+alias dot='cd ~/.local/share/chezmoi'   # jump to dotfiles repo
+alias tmp='cd /tmp'
+
+# Safer / more informative alternatives
+alias cd..='cd ..'               # common typo protection
+alias back='cd -'                # toggle between last two dirs (very popular)
+alias cdb='cd -'
+
+# List after cd — using eza with your preferred flags
+function cd() {
+    builtin cd "$@" && eza --icons --git --group-directories-first
+}
+
+# Quick mkdir + cd in one go (very frequently used)
+mkd() {
+    mkdir -p "$@" && cd "$_"
+}
+
+# Show directory stack / quick jumps
+alias dirs='dirs -v'             # numbered list
+alias 1='cd -1'
+alias 2='cd -2'
+alias 3='cd -3'
+alias 4='cd -4'
+
+# Tree-like views (prefer eza when available)
+if command -v eza >/dev/null 2>&1; then
+    alias t='eza --tree --level=2 --icons --git'
+    alias tt='eza --tree --level=3 --icons --git'
+    alias ttt='eza --tree --level=4 --icons --git'
+else
+    alias t='tree -L 2 -C'
+    alias tt='tree -L 3 -C'
+fi
+
+# ─── Git shortcuts ────────────────────────────────────────────────────────────
+# Basic navigation & status
+alias gs='git status'
+alias gst='git status --short'       # compact view
+alias gd='git diff'
+alias gds='git diff --staged'
+alias gl='git log --oneline --decorate --graph --all'
+alias glo='git log --oneline --decorate --graph --all --color --pretty="%C(auto)%h %Cgreen%cr %C(bold blue)%an%Creset %s"'
+
+# Branch & checkout
+alias gb='git branch'
+alias gco='git checkout'
+alias gcob='git checkout -b'         # create & switch
+alias gsw='git switch'               # modern alternative to checkout
+
+# Staging
+alias ga='git add'
+alias gaa='git add --all'            # most common
+alias gap='git add --patch'          # interactive
+
+# Commit variations
+alias gc='git commit'
+alias gcm='git commit -m'            # most used: gcm "fix typo"
+alias gca='git commit --amend'       # quick amend last commit
+alias gcan='git commit --amend --no-edit'
+
+# Compact add/commit/push
+# Usage: gcap "commit message"
+# Usage: gcap! "commit message"
+# ─── Git quick workflow ───────────────────────────────────────────────────────
+function gcap {
+    [[ -z "$1" ]] && { echo "Usage: gcap 'commit message'"; return 1; }
+    git add -A &&
+    git commit -m "$1" &&
+    git push &&
+    echo "→ Pushed successfully"
+}
+
+function gcap! {
+    [[ -z "$1" ]] && { echo "Usage: gcap! 'commit message'"; return 1; }
+    git add -A &&
+    git commit -m "$1" &&
+    git push --force-with-lease &&
+    echo "→ Force-with-lease pushed"
+}
+
+# Push & related
+alias gp='git push'
+alias gpf='git push --force-with-lease'   # safer than --force
+alias gpo='git push origin HEAD'          # push current branch
+alias gpup='git push --set-upstream origin HEAD'  # first push + set upstream
+
+# Pull & sync
+alias gpl='git pull'
+alias gup='git fetch && git rebase'  # nice linear history
 
 # ─── OS-aware ls aliases ─────────────────────────────────────────────
 # ─── Modern ls → eza (icons + git status on both OSes) ─────────────────────

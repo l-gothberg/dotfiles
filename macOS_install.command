@@ -114,6 +114,52 @@ copy_ssh_key ".startmail" "startmail"
 
 chown -R "$(whoami)":staff "$SSH_DIR"
 
+# ─────────────── Add SSH keys to agent + Keychain for persistence ───────────────
+log "Adding SSH keys to agent and macOS Keychain for automatic loading..."
+
+SSH_ADD_CMD="ssh-add --apple-use-keychain"
+
+# Fallback for very old macOS (unlikely in 2026), but safe
+if ! ssh-add --apple-use-keychain -q 2>/dev/null; then
+    SSH_ADD_CMD="ssh-add -K"
+fi
+
+# Add the keys (prompts for passphrase only once if encrypted; stores in Keychain)
+$SSH_ADD_CMD "$SSH_DIR/id_ed25519"   || log "WARNING: Failed to add id_ed25519 to agent/Keychain"
+$SSH_ADD_CMD "$SSH_DIR/startmail"     || log "WARNING: Failed to add startmail key to agent/Keychain"
+
+# Load any existing Keychain-managed keys (harmless if none yet)
+ssh-add --apple-load-keychain -q 2>/dev/null || true
+
+success "SSH keys added to agent and Keychain (persistent across reboots/sessions)."
+
+# ─────────────── Ensure ~/.ssh/config enables Keychain integration ───────────────
+log "Configuring ~/.ssh/config for automatic Keychain + agent usage..."
+
+CONFIG_FILE="$HOME/.ssh/config"
+
+# Ensure directory and file exist with correct perms
+mkdir -p "$SSH_DIR"
+touch "$CONFIG_FILE"
+chmod 600 "$CONFIG_FILE"
+
+# Append global settings only if not already present (idempotent)
+if ! grep -q "UseKeychain yes" "$CONFIG_FILE" 2>/dev/null; then
+    cat << 'EOF' >> "$CONFIG_FILE"
+
+# macOS Keychain integration: auto-load passphrases + add keys to agent
+Host *
+    AddKeysToAgent yes
+    UseKeychain yes
+    IdentityFile ~/.ssh/id_ed25519
+    IdentityFile ~/.ssh/startmail
+
+EOF
+    success "Added Keychain + agent settings to ~/.ssh/config"
+else
+    success "~/.ssh/config already has Keychain/agent configuration"
+fi
+
 # ─────────────── Install Xcode Command Line Tools ───────────────
 log "Checking for Xcode Command Line Tools..."
 if ! xcode-select -p &>/dev/null; then

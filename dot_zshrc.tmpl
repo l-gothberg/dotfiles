@@ -166,6 +166,7 @@ if command -v eza >/dev/null 2>&1; then
     alias ls="eza --icons --git --group-directories-first"
     alias la="eza -A --icons --git --group-directories-first"
     alias ll="eza -l --icons --git --group-directories-first --time-style=long-iso"
+    alias lla="eza -l --icons --git --group-directories-first --time-style=long-iso"
     alias lt="eza -l -T --icons --git --level=2"
     alias ltr="eza -l -T --icons --git --level=2 --sort=oldest"
     alias ld="eza -d .* --icons"
@@ -176,13 +177,13 @@ if command -v eza >/dev/null 2>&1; then
     alias ltree="eza -l --tree --icons --level=3"
 else
     # fallback (should never hit after bootstrap)
-    {{ if eq .chezmoi.os "darwin" }}
-        alias la="gls -A -F -h --group-directories-first --color=always --time-style=long-iso"
-        # ... (keep your old gls block if you want)
-    {{ else }}
-        alias la="ls -A -F -h --group-directories-first --color=always --time-style=long-iso"
-        # ...
-    {{ end }}
+    # {{ if eq .chezmoi.os "darwin" }}
+    #     alias la="gls -A -F -h --group-directories-first --color=always --time-style=long-iso"
+    #     # ... (keep your old gls block if you want)
+    # {{ else }}
+    #     alias la="ls -A -F -h --group-directories-first --color=always --time-style=long-iso"
+    #     # ...
+    # {{ end }}
 fi
 
 # ─── OS-aware package helpers

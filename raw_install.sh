@@ -19,14 +19,13 @@ echo "=== Starting dotfiles bootstrap ==="
 import_ssh_key_from_bootstrap_usb() {
     local usb_path=""
     local key_file="gmail"
-    local key_dest="$HOME/.ssh/id_ed25519"   # ← destination name (you can change)
+    local key_dest="$HOME/.ssh/id_ed25519"
 
     echo "→ Searching for flash drive named 'BOOTSTRAP'..."
 
     if [[ "$(uname)" == "Darwin" ]]; then
         usb_path="/Volumes/BOOTSTRAP"
     else
-        # Linux — try common auto-mount locations
         for prefix in "/media/$USER" "/run/media/$USER" "/mnt"; do
             if [[ -d "$prefix/BOOTSTRAP" ]]; then
                 usb_path="$prefix/BOOTSTRAP"
@@ -38,7 +37,6 @@ import_ssh_key_from_bootstrap_usb() {
     if [[ -z "$usb_path" || ! -d "$usb_path" ]]; then
         echo "→ Flash drive 'BOOTSTRAP' not found or not mounted."
         echo "   Continuing without importing SSH key."
-        echo "   (You can manually copy the key later: cp /path/to/BOOTSTRAP/KEY ~/.ssh/)"
         return 0
     fi
 
@@ -53,22 +51,35 @@ import_ssh_key_from_bootstrap_usb() {
 
     echo "→ Found key: $src_key"
 
-    mkdir -p ~/.ssh
-    chmod 700 ~/.ssh
+    # Create and secure ~/.ssh early
+    mkdir -p "$HOME/.ssh" || { echo "Failed to create ~/.ssh"; return 1; }
 
-    # Copy and rename to standard name (most tools expect id_ed25519 / id_rsa)
-    cp -p "$src_key" "$key_dest"
+    # Fix ownership (non-sudo first, sudo fallback)
+    if ! chown "$(whoami)" "$HOME/.ssh" 2>/dev/null; then
+        sudo chown "$(whoami)" "$HOME/.ssh" || { echo "Failed to set ownership on ~/.ssh"; return 1; }
+    fi
+    chmod 700 "$HOME/.ssh" || { echo "Failed to chmod ~/.ssh"; return 1; }
+
+    # Copy private key + fix ownership & perms immediately
+    cp -p "$src_key" "$key_dest" || { echo "Failed to copy private key"; return 1; }
+    chown "$(whoami)" "$key_dest" || sudo chown "$(whoami)" "$key_dest"
     chmod 600 "$key_dest"
 
-    # Also copy public key if it exists (named KEY.pub)
+    # Copy public key if present
     if [[ -f "$usb_path/${key_file}.pub" ]]; then
-        cp -p "$usb_path/${key_file}.pub" "${key_dest}.pub"
-        chmod 644 "${key_dest}.pub"
-        echo "→ Also copied public key (${key_file}.pub)"
+        local pub_dest="${key_dest}.pub"
+        cp -p "$usb_path/${key_file}.pub" "$pub_dest" || { echo "Failed to copy public key"; return 1; }
+        chown "$(whoami)" "$pub_dest" || sudo chown "$(whoami)" "$pub_dest"
+        chmod 644 "$pub_dest"
+        echo "→ Also copied public key → $pub_dest"
     fi
 
-    echo "→ SSH key copied to ~/.ssh/id_ed25519 (permissions fixed)"
-    echo "   You may want to verify: ls -l ~/.ssh/"
+    echo "→ SSH key imported successfully:"
+    echo "  → $key_dest (600)"
+    if [[ -f "${key_dest}.pub" ]]; then
+        echo "  → ${key_dest}.pub (644)"
+    fi
+    echo "  → Verify with: ls -l ~/.ssh/"
 }
 
 # Run early — before git clone
@@ -80,9 +91,19 @@ if ! command -v chezmoi >/dev/null 2>&1; then
     if [[ "$(uname)" == "Darwin" ]]; then
         # macOS
         if ! command -v brew >/dev/null 2>&1; then
-            echo "→ Installing Homebrew first..."
-            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-        fi
+    echo "→ Installing Homebrew (you will be prompted for password)..."
+    NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" || {
+        echo "Homebrew install failed. Please run the following manually and retry:"
+        echo "    /bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""
+        exit 1
+    }
+    # Re-source Homebrew environment (especially important on Apple Silicon)
+    if [ -x /opt/homebrew/bin/brew ]; then
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    elif [ -x /usr/local/bin/brew ]; then
+        eval "$(/usr/local/bin/brew shellenv)"
+    fi
+fi
         brew install chezmoi
     else
         # Linux

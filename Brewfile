@@ -27,7 +27,6 @@ brew "sqlite"
 brew "starship"                # prompt
 brew "trash"                   # safer rm
 brew "unar"
-brew "wondershare-uniconverter"
 brew "xz"
 brew "yq"                      # YAML processor
 brew "zsh"
@@ -82,3 +81,4 @@ cask "raspberry-pi-imager"     # Pi OS flashing
 # ─── Entertainment & misc ────────────────────────────────────────────────────
 cask "folding-at-home"         # distributed computing
 cask "steam"                   # gaming
+cask "wondershare-uniconverter"

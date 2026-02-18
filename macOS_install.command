@@ -194,12 +194,28 @@ else
     log "Homebrew already installed."
 fi
 
-# ─────────────── Install chezmoi ───────────────
-log "Installing chezmoi if missing..."
-if ! command -v chezmoi >/dev/null; then
-    curl -fsSL https://git.io/chezmoi | bash || error "chezmoi install failed"
+# ─────────────── Install chezmoi via Homebrew ───────────────
+log "Installing/updating chezmoi via Homebrew..."
+
+if ! command -v brew >/dev/null; then
+    error "Homebrew not available — cannot install chezmoi"
 fi
-success "chezmoi ready."
+
+brew install chezmoi || brew upgrade chezmoi || error "Failed to install/upgrade chezmoi via brew"
+
+if ! command -v chezmoi >/dev/null; then
+    error "chezmoi binary not found in PATH after brew install"
+fi
+
+success "chezmoi installed/updated via Homebrew and ready"
+
+# Optional: quick SSH connectivity check
+log "Testing GitHub SSH connectivity..."
+if ssh -T git@github.com 2>&1 | grep -q "successfully authenticated"; then
+    success "GitHub SSH authentication OK"
+else
+    log "WARNING: GitHub SSH test did not succeed — chezmoi init may still fail if repo is private"
+fi
 
 # ─────────────── Clone & Apply Dotfiles via SSH ───────────────
 # Using SSH URL — assumes keys were copied and added to GitHub

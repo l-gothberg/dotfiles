@@ -173,8 +173,6 @@ else
 fi
 
 # ─────────────── Install / Ensure Homebrew ───────────────
-log "Setting up Homebrew..."
-
 if [ -x /opt/homebrew/bin/brew ]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
 elif [ -x /usr/local/bin/brew ]; then
@@ -207,9 +205,9 @@ if ! command -v chezmoi >/dev/null; then
     error "chezmoi binary not found in PATH after brew install"
 fi
 
-success "chezmoi installed/updated via Homebrew and ready"
+success "chezmoi ready"
 
-# Optional: quick SSH connectivity check
+# ─────────────── Test SSH Keys for GitHub ───────────────
 log "Testing GitHub SSH connectivity..."
 if ssh -T git@github.com 2>&1 | grep -q "successfully authenticated"; then
     success "GitHub SSH authentication OK"

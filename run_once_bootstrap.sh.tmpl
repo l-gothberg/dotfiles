@@ -1,16 +1,51 @@
 #!/bin/bash
 set -e  # Exit on error
 
-LOG_FILE="$HOME/bootstrap_log.txt"
-exec > >(tee -a "$LOG_FILE") 2>&1  # Log to file + console
+# ─────────────── Setup Logging ───────────────
+TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
+LOG_FILE="/tmp/chezmoi_bootstrap_${TIMESTAMP}.log"
 
-trap 'echo "Error occurred. Log saved at $LOG_FILE"; exit 1' ERR
+echo "Chezmoi Bootstrap (run_once) started at $(date)" | tee "$LOG_FILE"
+
+log() {
+    echo "[$(date +'%H:%M:%S')] $*" | tee -a "$LOG_FILE"
+}
+
+success() {
+    log "SUCCESS: $*"
+}
+
+error() {
+    log "ERROR: $*"
+    log "Bootstrap failed."
+    echo ""
+    echo "┌────────────────────────────────────────────────────────────┐"
+    echo "│ Bootstrap failed — log saved at:                           │"
+    echo "│   $LOG_FILE                                         │"
+    echo "└────────────────────────────────────────────────────────────┘"
+    exit 1
+}
+
+cleanup_success() {
+    if [ -f "$LOG_FILE" ]; then
+        log "All steps completed successfully."
+        rm -f "$LOG_FILE"
+        echo ""
+        echo "Bootstrap finished successfully — temporary log removed."
+    fi
+}
+
+trap 'error "Script interrupted"' INT TERM
+trap cleanup_success EXIT
+
+# Redirect all subsequent output to both console + log
+exec > >(tee -a "$LOG_FILE") 2>&1
 
 # Detect OS
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
 
 if [ "$OS" = "darwin" ]; then
-    # macOS section 
+    # ─── macOS section ─────────────────────────────────────
     # Ensure Homebrew in PATH (Apple Silicon or Intel)
     if [ -x /opt/homebrew/bin/brew ]; then
         eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -19,7 +54,7 @@ if [ "$OS" = "darwin" ]; then
     fi
 
     if ! command -v brew &> /dev/null; then
-        echo "Installing Homebrew..."
+        log "Installing Homebrew..."
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
         # Re-eval PATH after install
         if [ -x /opt/homebrew/bin/brew ]; then
@@ -28,20 +63,73 @@ if [ "$OS" = "darwin" ]; then
             eval "$(/usr/local/bin/brew shellenv)"
         fi
     else
-        echo "Homebrew is already installed."
+        success "Homebrew is already installed."
     fi
 
-    echo "Installing packages from Brewfile..."
+    # ─── Pause for Full Disk Access (critical for some casks like logitech-g-hub) ───
+    echo ""
+    echo "┌──────────────────────────────────────────────────────────────────────┐"
+    echo "│  IMPORTANT: Some casks (e.g. logitech-g-hub) may fail to install     │"
+    echo "│  due to macOS security restrictions unless your terminal app has     │"
+    echo "│  Full Disk Access permission.                                        │"
+    echo "│                                                                      │"
+    echo "│  1. Go to System Settings → Privacy & Security → Full Disk Access    │"
+    echo "│  2. Unlock the padlock (enter password if prompted)                  │"
+    echo "│  3. Enable the checkbox for your terminal:                           │"
+    echo "│     • Terminal.app (if running from default Terminal)                │"
+    echo "│     • Ghostty (if using Ghostty)                                     │"
+    echo "│     • iTerm (if using iTerm)                                         │"
+    echo "│  4. If the app isn't listed, click '+' and add it manually from      │"
+    echo "│     /Applications/                                               │"
+    echo "│                                                                      │"
+    echo "│  After granting access, quit & relaunch the terminal app if needed.  │"
+    echo "│                                                                      │"
+    echo "│  Press ENTER when you're ready to continue with package installation │"
+    echo "└──────────────────────────────────────────────────────────────────────┘"
+    read    # Silent wait — no extra prompt text
+    echo "Continuing bootstrap..."
+
+    log "Installing packages from Brewfile..."
     brew bundle install --file=Brewfile
+
+    # ──── Fix Logitech G HUB install & prevent auto-launch ──────────────────
+    if brew list --cask logitech-g-hub &>/dev/null; then
+        log "Logitech G HUB installed — applying post-install fixes..."
+
+        # 1. Immediately kill any processes that might have started
+        killall lghub lghub_agent lghub_updater 2>/dev/null || true
+
+        # 2. Unload and disable all known Logitech launch agents/daemons
+        for agent in \
+            com.logi.ghub.agent \
+            com.logi.ghub.updater \
+            com.logi.ghub \
+            com.logitech.manager.daemon \
+            com.logi.options-plus.updater; do
+            launchctl unload -w "$HOME/Library/LaunchAgents/$agent.plist" 2>/dev/null || true
+            launchctl unload -w "/Library/LaunchAgents/$agent.plist" 2>/dev/null || true
+            launchctl unload -w "/Library/LaunchDaemons/$agent.plist" 2>/dev/null || true
+        done
+
+        # 3. Remove any auto-start plists if they persist
+        rm -f "$HOME/Library/LaunchAgents/com.logi.ghub.agent.plist" 2>/dev/null || true
+        rm -f "$HOME/Library/LaunchAgents/com.logi.ghub.updater.plist" 2>/dev/null || true
+
+        success "Logitech G HUB post-install cleanup complete."
+        log "→ App/background processes will not auto-launch."
+        log "→ You can manually open it from /Applications/lghub.app when needed."
+    else
+        log "Logitech G HUB was not installed (skipping post-install fixes)."
+    fi
 
     ZSH_PATH="$(brew --prefix zsh)/bin/zsh"
     if ! grep -q "^$ZSH_PATH$" /etc/shells; then
-        echo "Adding $ZSH_PATH to /etc/shells..."
+        log "Adding $ZSH_PATH to /etc/shells..."
         echo "$ZSH_PATH" | sudo tee -a /etc/shells
     fi
     
     if [ "$SHELL" != "$ZSH_PATH" ]; then
-        echo "Setting default shell to $ZSH_PATH..."
+        log "Setting default shell to $ZSH_PATH..."
         chsh -s "$ZSH_PATH"
     fi
 
@@ -52,19 +140,19 @@ elif [ "$OS" = "linux" ]; then
     sudo apt install -y software-properties-common fontconfig
 
     if [ -f "packages-linux.txt" ]; then
-        echo "Installing simple packages..."
+        log "Installing simple packages..."
         sudo apt install -y $(cat packages-linux.txt)
     else
-        echo "packages-linux.txt not found. Skipping simple installs."
+        log "packages-linux.txt not found. Skipping simple installs."
     fi
 
     # Add repos and install new CLI tools (bat, ripgrep, etc.)
-    echo "Installing additional CLI tools..."
+    log "Installing additional CLI tools..."
     sudo apt install -y bat ripgrep fd-find fzf jq zoxide zsh-autosuggestions zsh-syntax-highlighting
 
     # eza (add repo for latest, even if in universe)
     if ! command -v eza &> /dev/null; then
-        echo "Adding eza repo and installing..."
+        log "Adding eza repo and installing..."
         sudo apt install -y gpg
         sudo mkdir -p /etc/apt/keyrings
         wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
@@ -76,7 +164,7 @@ elif [ "$OS" = "linux" ]; then
 
     # gh (GitHub CLI)
     if ! command -v gh &> /dev/null; then
-        echo "Adding gh repo and installing..."
+        log "Adding gh repo and installing..."
         (type -p wget >/dev/null || (sudo apt update && sudo apt install wget -y)) \
         && sudo mkdir -p -m 755 /etc/apt/keyrings \
         && wget -qO- https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \
@@ -88,7 +176,7 @@ elif [ "$OS" = "linux" ]; then
 
     # mise (version manager)
     if ! command -v mise &> /dev/null; then
-        echo "Installing mise..."
+        log "Installing mise..."
         sudo apt install -y curl
         sudo install -dm 755 /etc/apt/keyrings
         curl -fSs https://mise.jdx.dev/gpg-key.pub | sudo tee /etc/apt/keyrings/mise-archive-keyring.gpg >/dev/null
@@ -103,24 +191,24 @@ elif [ "$OS" = "linux" ]; then
 
     # yq (YAML processor)
     if ! command -v yq &> /dev/null; then
-        echo "Installing yq..."
+        log "Installing yq..."
         sudo apt install -y yq
     fi
 
     # Starship prompt
     if ! command -v starship &> /dev/null; then
-        echo "Installing Starship..."
+        log "Installing Starship..."
         curl -sS https://starship.rs/install.sh | sh -s -- -y
     fi
 
     # zsh-autocomplete (no apt package, git clone)
     if [ ! -d "/usr/share/zsh-autocomplete" ]; then
-        echo "Installing zsh-autocomplete..."
+        log "Installing zsh-autocomplete..."
         sudo git clone https://github.com/marlonrichert/zsh-autocomplete.git /usr/share/zsh-autocomplete
     fi
 
     # Nerd Fonts (manual download for Linux)
-    echo "Installing Nerd Fonts..."
+    log "Installing Nerd Fonts..."
     mkdir -p ~/.fonts
     cd ~/.fonts
     for font in FiraCode Hack JetBrainsMono; do
@@ -136,7 +224,7 @@ elif [ "$OS" = "linux" ]; then
 
     # VS Code (updated to .sources format)
     if ! command -v code &> /dev/null; then
-        echo "Installing VS Code..."
+        log "Installing VS Code..."
         sudo apt-get install -y wget gpg apt-transport-https
         wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
         sudo install -D -o root -g root -m 644 microsoft.gpg /usr/share/keyrings/microsoft.gpg
@@ -148,7 +236,7 @@ elif [ "$OS" = "linux" ]; then
 
     # Discord
     if ! command -v discord &> /dev/null; then
-        echo "Installing Discord..."
+        log "Installing Discord..."
         wget -O discord.deb "https://discord.com/api/download?platform=linux&format=deb"
         sudo gdebi -n discord.deb
         rm discord.deb
@@ -156,7 +244,7 @@ elif [ "$OS" = "linux" ]; then
 
     # 1Password
     if ! dpkg -s 1password &> /dev/null; then
-        echo "Installing 1Password..."
+        log "Installing 1Password..."
         curl -sS https://downloads.1password.com/linux/keys/1password.asc | sudo gpg --dearmor --output /usr/share/keyrings/1password-archive-keyring.gpg
         ARCH=$(dpkg --print-architecture)
         echo "deb [arch=${ARCH} signed-by=/usr/share/keyrings/1password-archive-keyring.gpg] https://downloads.1password.com/linux/debian/${ARCH} stable main" | sudo tee /etc/apt/sources.list.d/1password.list
@@ -170,19 +258,18 @@ elif [ "$OS" = "linux" ]; then
 
     ZSH_PATH="$(which zsh)"
     if ! grep -q "^$ZSH_PATH$" /etc/shells; then
-        echo "Adding $ZSH_PATH to /etc/shells..."
+        log "Adding $ZSH_PATH to /etc/shells..."
         echo "$ZSH_PATH" | sudo tee -a /etc/shells
     fi
     
     if [ "$SHELL" != "$ZSH_PATH" ]; then
-        echo "Setting default shell to $ZSH_PATH..."
+        log "Setting default shell to $ZSH_PATH..."
         chsh -s "$ZSH_PATH"
     fi
 
 else
-    echo "Unsupported OS: $OS"
-    exit 1
+    error "Unsupported OS: $OS"
 fi
 
-echo "Bootstrap complete!"
-rm -f "$LOG_FILE"  # Delete log on success
+success "Bootstrap complete!"
+# cleanup_success is called via trap EXIT

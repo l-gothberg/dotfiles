@@ -71,7 +71,7 @@ cask "firefox"
 cask "discord"                 # chat and social
 cask "iina"                    # video player
 # cask "makemkv"                 # Digital Media Ripping Tool -- Deprecated because it does not pass the macOS Gatekeeper check! It will be disabled on 2026-09-01
-cask "telegram-desktop".       # Desktop client for Telegram Messenger
+cask "telegram-desktop"        # Desktop client for Telegram Messenger
 cask "thunderbird"             # email and calendar client
 cask "vlc"                     # video player
 
@@ -79,6 +79,7 @@ cask "vlc"                     # video player
 cask "alfred"                  # launcher
 cask "folx"                    # download manager
 cask "prefs-editor"            # preference plist editor
+cask "veracrypt"               # disk encryption utility
 
 # ─── Development & hardware specific ─────────────────────────────────────────
 cask "autodesk-fusion"         # CAD software for 3D design & printing
@@ -92,7 +93,7 @@ cask "steam"                   # gaming
 cask "wondershare-uniconverter"
 
 # ─── Crypto Related ──────────────────────────────────────────────────────────
-cask "bluewallet".             # Bitcoin Wallet
+cask "bluewallet"              # Bitcoin Wallet
 
 # ─── Development & hardware specific (Run Last for Compatibility) ────────────
 cask "logitech-g-hub"          # Logitech peripherals
